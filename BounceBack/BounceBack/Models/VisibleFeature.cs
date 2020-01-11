@@ -10,30 +10,35 @@ namespace BounceBack.Models
 {
     public class VisibleFeature
     {
-        public static IDictionary<VisibleFeatureType, IEnumerable<VisibleFeature>> VisibleFeatures = Load();
+        public static IDictionary<VisibleFeatureType, List<VisibleFeature>> VisibleFeatures = Load();
 
-        public static Dictionary<VisibleFeatureType, IEnumerable<VisibleFeature>> Load()
+        public static Dictionary<VisibleFeatureType, List<VisibleFeature>> Load()
         {
-            var dictionary = new Dictionary<VisibleFeatureType, IEnumerable<VisibleFeature>>();
+            var dictionary = new Dictionary<VisibleFeatureType, List<VisibleFeature>>();
 
             var resourceManager = ServiceProvider.ResourceManagerRegistry.GetResourceManager(ResourceType.Textures);
 
             foreach (var visibleFeatureType in (VisibleFeatureType[]) Enum.GetValues(typeof(VisibleFeatureType)))
             {
+                if (visibleFeatureType == VisibleFeatureType.VISIBLEFEATURETYPE_COUNT)
+                {
+                    continue;
+                }
+
                 var textures = resourceManager?.GetResourcesWithPrefix(visibleFeatureType.ToString());
 
-                foreach (var texture in textures)
-                {
-                    if (!dictionary.ContainsKey(visibleFeatureType))
+                if (textures != null)
+                    foreach (var texture in textures)
                     {
-                        dictionary[visibleFeatureType] = new List<VisibleFeature> { new VisibleFeature(texture) };
+                        if (!dictionary.ContainsKey(visibleFeatureType))
+                        {
+                            dictionary[visibleFeatureType] = new List<VisibleFeature> {new VisibleFeature(texture)};
+                        }
+                        else
+                        {
+                            dictionary[visibleFeatureType].Add(new VisibleFeature(texture));
+                        }
                     }
-                    else
-                    {
-                        dictionary[visibleFeatureType].Append(new VisibleFeature(texture));
-                    }
-                }
-                
             }
 
             return dictionary;

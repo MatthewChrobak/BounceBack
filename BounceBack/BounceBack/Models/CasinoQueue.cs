@@ -4,8 +4,6 @@ using Annex.Graphics;
 using Annex.Graphics.Contexts;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace BounceBack.Models
 {
@@ -93,20 +91,15 @@ namespace BounceBack.Models
 
         public void AddNewPersonToBack()
         {
-            void Work()
-            {
-                var builder = new PersonBuilder()
-                    .WithFeature(VisibleFeatureType.Bottom)
-                    .WithFeature(VisibleFeatureType.Clothes)
-                    .WithFeature(VisibleFeatureType.EyeSockets)
-                    .WithFeature(VisibleFeatureType.HeadShapes)
-                    .WithFeature(VisibleFeatureType.Mouths)
-                    .WithFeature(VisibleFeatureType.Noses);
+            var builder = new PersonBuilder()
+                .WithFeature(VisibleFeatureType.Bottom)
+                .WithFeature(VisibleFeatureType.Clothes)
+                .WithFeature(VisibleFeatureType.EyeSockets)
+                .WithFeature(VisibleFeatureType.HeadShapes)
+                .WithFeature(VisibleFeatureType.Mouths)
+                .WithFeature(VisibleFeatureType.Noses);
 
-                this._peopleInLine.Add(builder.Build());
-            }
-
-            new Thread(Work).Start();
+            this._peopleInLine.Add(builder.Build());
         }
     }
 }
