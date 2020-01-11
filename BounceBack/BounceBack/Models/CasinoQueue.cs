@@ -56,7 +56,7 @@ namespace BounceBack.Models
 
         public void Draw(ICanvas canvas) {
             canvas.Draw(this._background);
-            // We need to draw from back to front, but not too far back. 
+            // We need to draw from back to front, but not too far back.
             for (int i = this._renderers.Length; i >= 0; i--) {
                 canvas.Draw(this._fog);
 

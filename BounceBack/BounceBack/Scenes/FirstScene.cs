@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Annex;
 using Annex.Events;
 using Annex.Graphics;
@@ -5,42 +6,63 @@ using Annex.Graphics.Events;
 using Annex.Scenes.Components;
 using BounceBack.Models;
 using BounceBack.Scenes.Elements;
+using BounceBack.Containers;
 
 namespace BounceBack.Scenes
 {
     public class FirstScene : Scene
     {
-        public CasinoQueue _casionQueue;
+        public CasinoQueue _casinoQueue;
 
         private const string _timelimitEvent = "set-time-limit";
         private TopScrollbar topScrollbar;
         private int _timeLimit = 5000;
         private int timeLimitCount = 0;
 
-        public FirstScene() {
-            this._casionQueue = new CasinoQueue();
-            this._casionQueue.AddNewPersonToBack();
-            this._casionQueue.AddNewPersonToBack();
-            this._casionQueue.AddNewPersonToBack();
-            this._casionQueue.AddNewPersonToBack();
-            this._casionQueue.AddNewPersonToBack();
-            this._casionQueue.AddNewPersonToBack();
-            this._casionQueue.AddNewPersonToBack();
-            this._casionQueue.AddNewPersonToBack();
+        private readonly ActionButtonContainer _actionButtonContainer;
 
-            this.Events.AddEvent("", PriorityType.LOGIC, () => {
-                this._casionQueue.RemovePersonAtFront();
-                this._casionQueue.AddNewPersonToBack();
-                return ControlEvent.NONE;
-            }, 1000);
+        public FirstScene()
+        {
+            this._casinoQueue = new CasinoQueue();
+            this._casinoQueue.AddNewPersonToBack();
+            this._casinoQueue.AddNewPersonToBack();
+            //this._casinoQueue.AddNewPersonToBack();
+            //this._casinoQueue.AddNewPersonToBack();
+            //this._casinoQueue.AddNewPersonToBack();
+            //this._casinoQueue.AddNewPersonToBack();
+            //this._casinoQueue.AddNewPersonToBack();
+            //this._casinoQueue.AddNewPersonToBack();
+            //this._casinoQueue.AddNewPersonToBack();
+
+            this._actionButtonContainer = new ActionButtonContainer()
+            {
+                AcceptButtonEvent = this.ActionButtonClicked,
+                RejectButtonEvent = this.ActionButtonClicked
+            };
+            this._actionButtonContainer.SetPositionUpdateChildrenRelative(300, 500);
 
             topScrollbar = new TopScrollbar();
+
+            this.AddChild(_actionButtonContainer);
+            this.AddChild(topScrollbar);
+            //StartTimeLimit();
+
+            //this.Events.AddEvent("test", PriorityType.LOGIC, () => {
+            //    GetTimeRatio();
+            //    return ControlEvent.NONE;
+            //}, 500, 0);
         }
 
-        public override void Draw(ICanvas canvas) {
-            this._casionQueue.Draw(canvas);
+        private void ActionButtonClicked()
+        {
+            this._casinoQueue.RemovePersonAtFront();
+            this._casinoQueue.AddNewPersonToBack();
+        }
+
+        public override void Draw(ICanvas canvas)
+        {
+            this._casinoQueue.Draw(canvas);
             base.Draw(canvas);
-            topScrollbar.Draw(canvas);
         }
 
         private ControlEvent TimeLimit()
@@ -57,12 +79,12 @@ namespace BounceBack.Scenes
 
         public void StartTimeLimit()
         {
-            this.Events.AddEvent(_timelimitEvent, PriorityType.LOGIC, TimeLimit, interval_ms:_timeLimit);
+            this.Events.AddEvent(_timelimitEvent, PriorityType.LOGIC, TimeLimit, interval_ms: _timeLimit);
         }
 
         public void ResetTimeLimit()
         {
-            if(this.Events.RemoveEvent(_timelimitEvent))
+            if (this.Events.RemoveEvent(_timelimitEvent))
             {
                 Debug.Log("Removed TimeLimitEvent");
             }
@@ -80,20 +102,19 @@ namespace BounceBack.Scenes
             float ratio = 0;
             GameEvent eventTimer = this.Events.GetEvent(_timelimitEvent);
 
-            if(eventTimer != null)
+            if (eventTimer != null)
             {
                 ratio = ( eventTimer.GetTimeBeforeNextInvocation()/ (float)_timeLimit);
             }
-
             return ratio;
         }
 
-        public override void HandleMouseButtonPressed(MouseButtonPressedEvent e)
-        {
-            base.HandleMouseButtonPressed(e);
+        //public override void HandleMouseButtonPressed(MouseButtonPressedEvent e)
+        //{
+        //    base.HandleMouseButtonPressed(e);
 
-            topScrollbar.PressedOnButtons(e.WorldX, e.WorldY);
-            ResetTimeLimit();
-        }
+        //    topScrollbar.PressedOnButtons(e.WorldX, e.WorldY);
+        //    ResetTimeLimit();
+        //}
     }
 }
