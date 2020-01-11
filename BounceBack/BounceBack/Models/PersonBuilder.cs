@@ -6,9 +6,12 @@ namespace BounceBack.Models
     public class PersonBuilder
     {
         private Person _person;
+        private bool _isMale;
+        private bool _isFemale => !this._isMale;
 
         public PersonBuilder() {
             this._person = new Person();
+            this._isMale = RNG.Next(0, 100) < 50;
         }
 
         public Person Build() {
@@ -17,10 +20,18 @@ namespace BounceBack.Models
 
         public PersonBuilder MakeNew() {
             this._person = new Person();
+            this._isMale = RNG.Next(0, 100) < 50;
             return this;
         }
 
         public PersonBuilder WithFeature(VisibleFeatureType type) {
+            if (type == VisibleFeatureType.Clothes && this._isMale) {
+                return this;
+            }
+            if (type == VisibleFeatureType.Bottom && this._isFemale) {
+                return this;
+            }
+
             var features = VisibleFeature.GetFeaturesTextures(type);
             this._person.SetFeature(type, features.Random());
             return this;

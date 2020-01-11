@@ -4,16 +4,18 @@
     {
         Hair = 0,
         Eyebrows,
-        Nose,
-        Mouth,
+        Noses,
+        Mouths,
         Ears,
         Moles,
         Eyes,
-        HeadShape,
+        HeadShapes,
         Torso,
         Bottom,
         Feet,
         Arm,
-        VISIBLEFEATURETYPE_COUNT
+        Clothes,
+        EyeSockets,
+        VISIBLEFEATURETYPE_COUNT,
     }
 }

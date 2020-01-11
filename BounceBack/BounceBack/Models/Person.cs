@@ -16,7 +16,12 @@ namespace BounceBack.Models
             _featureOrder = new VisibleFeatureType[] {
                 VisibleFeatureType.Arm,
                 VisibleFeatureType.Bottom,
-                VisibleFeatureType.Ears
+                VisibleFeatureType.Clothes,
+                VisibleFeatureType.HeadShapes,
+                VisibleFeatureType.Mouths,
+                VisibleFeatureType.Noses,
+                VisibleFeatureType.Ears,
+                VisibleFeatureType.EyeSockets,
             };
         }
 

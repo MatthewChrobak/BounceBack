@@ -78,7 +78,11 @@ namespace BounceBack.Models
         public void GeneratePerson() {
             var builder = new PersonBuilder()
                 .WithFeature(VisibleFeatureType.Bottom)
-                .WithFeature(VisibleFeatureType.HeadShape);
+                .WithFeature(VisibleFeatureType.Clothes)
+                .WithFeature(VisibleFeatureType.EyeSockets)
+                .WithFeature(VisibleFeatureType.HeadShapes)
+                .WithFeature(VisibleFeatureType.Mouths)
+                .WithFeature(VisibleFeatureType.Noses)
                 ;
 
             this._peopleInLine.Add(builder.Build());
