@@ -1,4 +1,5 @@
-﻿using Annex;
+﻿using System;
+using Annex;
 using Annex.Data;
 using System;
 using System.Collections.Generic;
@@ -39,15 +40,13 @@ namespace BounceBack.Models
             return _featureOrder;
         }
 
-        internal void SetFeature(VisibleFeatureType type, object p) {
-            throw new NotImplementedException();
-        }
-
-        public void SetFeature(VisibleFeatureType featureType, string textureName) {
+        public void SetFeature(VisibleFeatureType featureType, VisibleFeature visibleFeature)
+        {
             Debug.Assert((int)featureType < this._features.Length);
-            var feature = new VisibleFeature(textureName);
+            var feature = visibleFeature;
 
-            if (featureType == VisibleFeatureType.Hair) {
+            if (featureType == VisibleFeatureType.Hair)
+            {
                 feature.TextureContext.RenderColor = this._hairColor;
             }
 

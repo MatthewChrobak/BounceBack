@@ -91,7 +91,6 @@ namespace BounceBack.Models
                 .WithFeature(VisibleFeatureType.Noses)
                 .WithFeature(VisibleFeatureType.Shoes)
                 ;
-
             this._peopleInLine.Add(builder.Build());
         }
     }
