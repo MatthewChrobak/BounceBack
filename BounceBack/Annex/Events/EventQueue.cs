@@ -44,5 +44,21 @@ namespace Annex.Events
             }
             return null;
         }
+
+        public bool RemoveEvent(string id)
+        {
+            foreach(var level in _queue)
+            {
+                foreach(var e in level)
+                {
+                    if(e.EventID == id)
+                    {
+                        level.Remove(e);
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
     }
 }
