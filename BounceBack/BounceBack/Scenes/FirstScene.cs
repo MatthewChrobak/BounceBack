@@ -1,10 +1,10 @@
-using System.Threading.Tasks;
 using Annex;
 using Annex.Events;
 using Annex.Graphics;
 using Annex.Graphics.Events;
 using Annex.Scenes;
 using Annex.Scenes.Components;
+using BounceBack.Containers;
 using BounceBack.Models;
 using BounceBack.Scenes.Elements;
 using BounceBack.Containers;
@@ -15,7 +15,8 @@ namespace BounceBack.Scenes
 {
     public class FirstScene : Scene
     {
-        public CasinoQueue _casinoQueue;
+        public readonly CasinoQueue _casinoQueue;
+        public readonly BanList BanList;
 
         private const string _timelimitEvent = "set-time-limit";
         private TopScrollbar topScrollbar;
@@ -30,16 +31,10 @@ namespace BounceBack.Scenes
 
         public FirstScene()
         {
+            this.BanList = new BanList();
             this._casinoQueue = new CasinoQueue();
             this._casinoQueue.AddNewPersonToBack();
             this._casinoQueue.AddNewPersonToBack();
-            //this._casinoQueue.AddNewPersonToBack();
-            //this._casinoQueue.AddNewPersonToBack();
-            //this._casinoQueue.AddNewPersonToBack();
-            //this._casinoQueue.AddNewPersonToBack();
-            //this._casinoQueue.AddNewPersonToBack();
-            //this._casinoQueue.AddNewPersonToBack();
-            //this._casinoQueue.AddNewPersonToBack();
 
             this._actionButtonContainer = new ActionButtonContainer()
             {
@@ -49,9 +44,11 @@ namespace BounceBack.Scenes
             this._actionButtonContainer.SetPositionUpdateChildrenRelative(300, 500);
 
             topScrollbar = new TopScrollbar();
+            BanList.OnAddToBanList += topScrollbar.OnAddToBanList;
 
             this.AddChild(_actionButtonContainer);
             this.AddChild(topScrollbar);
+
             //StartTimeLimit();
 
             //this.Events.AddEvent("test", PriorityType.LOGIC, () => {

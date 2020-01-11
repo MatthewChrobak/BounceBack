@@ -57,7 +57,7 @@ namespace BounceBack.Models
         public void Draw(ICanvas canvas) {
             canvas.Draw(this._background);
             // We need to draw from back to front, but not too far back.
-            for (int i = this._renderers.Length; i >= 0; i--) {
+            for (int i = this._renderers.Length - 1; i >= 0; i--) {
                 canvas.Draw(this._fog);
 
                 if (i < this._peopleInLine.Count) {
@@ -80,18 +80,7 @@ namespace BounceBack.Models
         }
 
         public void AddNewPersonToBack() {
-            var builder = new PersonBuilder()
-                .WithFeature(VisibleFeatureType.Accessories)
-                .WithFeature(VisibleFeatureType.Bottom)
-                .WithFeature(VisibleFeatureType.NakedBody)
-                .WithFeature(VisibleFeatureType.Clothes)
-                .WithFeature(VisibleFeatureType.EyeSockets)
-                .WithFeature(VisibleFeatureType.HeadShapes)
-                .WithFeature(VisibleFeatureType.Mouths)
-                .WithFeature(VisibleFeatureType.Noses)
-                .WithFeature(VisibleFeatureType.Shoes)
-                ;
-            this._peopleInLine.Add(builder.Build());
+            this._peopleInLine.Add(Person.New());
         }
     }
 }
