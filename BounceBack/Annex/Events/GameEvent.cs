@@ -44,5 +44,10 @@ namespace Annex.Events
         public long GetInterval() {
             return this._interval;
         }
+
+        public long GetTimeBeforeNextInvocation(){
+            return this._nextEventInvocation;
+        }
+
     }
 }
