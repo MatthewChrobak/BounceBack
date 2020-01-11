@@ -1,24 +1,47 @@
-﻿using Annex;
+using Annex;
 using Annex.Events;
 using Annex.Graphics;
 using Annex.Graphics.Events;
 using Annex.Scenes.Components;
+using BounceBack.Models;
 using BounceBack.Scenes.Elements;
 
 namespace BounceBack.Scenes
 {
     public class FirstScene : Scene
     {
+        public CasinoQueue _casionQueue;
+
         private const string _timelimitEvent = "set-time-limit";
-
         private TopScrollbar topScrollbar;
-
         private int _timeLimit = 5000;
         private int timeLimitCount = 0;
 
-        public FirstScene() : base()
-        {
+        public FirstScene() {
+            this._casionQueue = new CasinoQueue();
+            this._casionQueue.AddNewPersonToBack();
+            this._casionQueue.AddNewPersonToBack();
+            this._casionQueue.AddNewPersonToBack();
+            this._casionQueue.AddNewPersonToBack();
+            this._casionQueue.AddNewPersonToBack();
+            this._casionQueue.AddNewPersonToBack();
+            this._casionQueue.AddNewPersonToBack();
+            this._casionQueue.AddNewPersonToBack();
+            this._casionQueue.AddNewPersonToBack();
+
+            this.Events.AddEvent("", PriorityType.LOGIC, () => {
+                this._casionQueue.RemovePersonAtFront();
+                this._casionQueue.AddNewPersonToBack();
+                return ControlEvent.NONE;
+            }, 1000);
+
             topScrollbar = new TopScrollbar();
+        }
+
+        public override void Draw(ICanvas canvas) {
+            this._casionQueue.Draw(canvas);
+            base.Draw(canvas);
+            topScrollbar.Draw(canvas);
         }
 
         private ControlEvent TimeLimit()
@@ -64,12 +87,6 @@ namespace BounceBack.Scenes
             }
 
             return ratio;
-        }
-
-        public override void Draw(ICanvas canvas)
-        {
-            base.Draw(canvas);
-            topScrollbar.Draw(canvas);
         }
 
         public override void HandleMouseButtonPressed(MouseButtonPressedEvent e)

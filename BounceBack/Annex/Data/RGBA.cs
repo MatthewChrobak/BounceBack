@@ -51,5 +51,19 @@ namespace Annex.Data
         public static implicit operator SFML.Graphics.Color(RGBA source) {
             return new SFML.Graphics.Color(source.R, source.G, source.B, source.A);
         }
+
+        public override bool Equals(object? obj) {
+            if (obj is RGBA color) {
+                return color.R == this.R
+                    && color.G == this.G
+                    && color.B == this.B
+                    && color.A == this.A;
+            }
+            return false;
+        }
+
+        public override int GetHashCode() {
+            return this.R + this.G + this.B + this.A;
+        }
     }
 }

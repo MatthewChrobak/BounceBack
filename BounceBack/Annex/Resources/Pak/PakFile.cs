@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace Annex.Resources.Pak
 {
@@ -78,6 +79,11 @@ namespace Annex.Resources.Pak
                 br.Write(entry.Value.Data);
             }
             File.WriteAllBytes(path, ms.ToArray());
+        }
+
+        internal IEnumerable<string> GetResourcesWithPrefix(string prefix) {
+            prefix = prefix.ToLowerInvariant();
+            return this._entries.Keys.Where(key => key.StartsWith(prefix));
         }
 
         public void Dispose() {

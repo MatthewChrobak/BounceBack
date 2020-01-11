@@ -1,4 +1,5 @@
 ﻿#nullable enable
+using System;
 using System.Collections.Generic;
 
 namespace Annex.Resources
@@ -43,5 +44,6 @@ namespace Annex.Resources
         }
 
         protected internal abstract void PackageResourcesToBinary(string baseDir);
+        public abstract IEnumerable<string> GetResourcesWithPrefix(string prefix);
     }
 }

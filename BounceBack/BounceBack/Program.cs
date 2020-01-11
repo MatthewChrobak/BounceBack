@@ -7,12 +7,10 @@ namespace BounceBack
 {
     public class Program
     {
-        private static void Main(string[] args)
-        {
+        private static void Main(string[] args) {
             ServiceProvider.ResourceManagerRegistry.GetOrCreateResourceManager<PakResourceManager>(ResourceType.Textures);
             AnnexGame.Initialize();
             Debug.PackageResourcesToBinary();
-
             AnnexGame.Start<FirstScene>();
         }
     }
