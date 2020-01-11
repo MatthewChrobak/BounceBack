@@ -1,6 +1,7 @@
 ﻿#nullable enable
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace Annex.Resources.Pak
 {
@@ -57,6 +58,13 @@ namespace Annex.Resources.Pak
             this._pak?.Dispose();
             this._pak = null;
             pak.Save(this.PakFilePath);
+        }
+
+        public override IEnumerable<string> GetResourcesWithPrefix(string prefix) {
+            if (this._pak == null) {
+                this._pak = PakFile.CreateForInput(this.PakFilePath);
+            }
+            return this._pak.GetResourcesWithPrefix(prefix);
         }
     }
 }

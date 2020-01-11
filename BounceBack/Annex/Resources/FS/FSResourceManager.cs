@@ -1,6 +1,7 @@
 ﻿#nullable enable
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace Annex.Resources.FS
 {
@@ -48,6 +49,10 @@ namespace Annex.Resources.FS
                 Directory.CreateDirectory(fi.Directory.FullName);
                 File.Copy(sourceFile, destinationFile, true);
             }
+        }
+
+        public override IEnumerable<string> GetResourcesWithPrefix(string prefix) {
+            return this._resources.Keys.Where(key => key.StartsWith(prefix));
         }
     }
 }
