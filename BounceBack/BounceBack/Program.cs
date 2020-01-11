@@ -1,6 +1,6 @@
 ﻿using Annex;
+using Annex.Resources;
 using Annex.Resources.Pak;
-using BounceBack.Models;
 using BounceBack.Scenes;
 
 namespace BounceBack
@@ -8,9 +8,7 @@ namespace BounceBack
     public class Program
     {
         private static void Main(string[] args) {
-            var x = default(Person);
-            ServiceProvider.ResourceManagerRegistry.GetOrCreateResourceManager<PakResourceManager>(Annex.Resources.ResourceType.Textures);
-
+            ServiceProvider.ResourceManagerRegistry.GetOrCreateResourceManager<PakResourceManager>(ResourceType.Textures);
             AnnexGame.Initialize();
             Debug.PackageResourcesToBinary();
             AnnexGame.Start<FirstScene>();
