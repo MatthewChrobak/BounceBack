@@ -6,11 +6,11 @@ namespace BounceBack.Models
 {
     public class Person
     {
-        private static VisibleFeatureType[] _featureOrder;
+        protected static VisibleFeatureType[] _featureOrder;
 
-        private VisibleFeature?[] _features;
-        private RGBA _skinColor;
-        private RGBA _hairColor;
+        protected VisibleFeature?[] _features;
+        protected RGBA _skinColor;
+        protected RGBA _hairColor;
 
         static Person() {
             _featureOrder = new VisibleFeatureType[] {

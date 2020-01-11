@@ -5,6 +5,7 @@ using Annex.Graphics.Events;
 using Annex.Scenes.Components;
 using BounceBack.Models;
 using BounceBack.Scenes.Elements;
+using System.Collections.Generic;
 
 namespace BounceBack.Scenes
 {
@@ -16,8 +17,11 @@ namespace BounceBack.Scenes
         private TopScrollbar topScrollbar;
         private int _timeLimit = 5000;
         private int timeLimitCount = 0;
+        
+        public List<Person> _bannedList;        
 
         public FirstScene() {
+            
             this._casionQueue = new CasinoQueue();
             this._casionQueue.AddNewPersonToBack();
             this._casionQueue.AddNewPersonToBack();
@@ -28,14 +32,16 @@ namespace BounceBack.Scenes
             this._casionQueue.AddNewPersonToBack();
             this._casionQueue.AddNewPersonToBack();
             this._casionQueue.AddNewPersonToBack();
-
+            
             this.Events.AddEvent("", PriorityType.LOGIC, () => {
                 this._casionQueue.RemovePersonAtFront();
-                this._casionQueue.AddNewPersonToBack();
+                this._casionQueue.AddNewPersonToBack();                                
                 return ControlEvent.NONE;
             }, 1000);
-
+            
             topScrollbar = new TopScrollbar();
+            _bannedList = new List<Person>();
+            topScrollbar.UpdateBar(_bannedList);
         }
 
         public override void Draw(ICanvas canvas) {
@@ -94,7 +100,26 @@ namespace BounceBack.Scenes
             base.HandleMouseButtonPressed(e);
 
             topScrollbar.PressedOnButtons(e.WorldX, e.WorldY);
-            ResetTimeLimit();
+            //ResetTimeLimit();    
+            AddToBanList(this._casionQueue.PersonInFront);
+        }
+
+        public void AddToBanList(Person person)
+        {
+            if(!_bannedList.Contains(person))
+            {
+                _bannedList.Add(person);
+            }
+            topScrollbar?.UpdateBar(_bannedList);
+        }
+
+        public void RemoveFromBanList(Person person)
+        {
+            if(_bannedList.Contains(person))
+            {
+                _bannedList.Remove(person);
+            }
+            topScrollbar?.UpdateBar(_bannedList);
         }
     }
 }
