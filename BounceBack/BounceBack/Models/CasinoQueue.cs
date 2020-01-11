@@ -26,6 +26,10 @@ namespace BounceBack.Models
             }
         }
 
+        public void RemovePersonAtFront() {
+            this._peopleInLine.RemoveAt(0);
+        }
+
         public CasinoQueue() {
             this._peopleInLine = new List<Person>();
             this._renderers = new PersonRenderer[] {
@@ -75,7 +79,7 @@ namespace BounceBack.Models
             }
         }
 
-        public void GeneratePerson() {
+        public void AddNewPersonToBack() {
             var builder = new PersonBuilder()
                 .WithFeature(VisibleFeatureType.Bottom)
                 .WithFeature(VisibleFeatureType.Clothes)
