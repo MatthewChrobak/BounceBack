@@ -4,6 +4,8 @@ using Annex.Graphics;
 using Annex.Graphics.Contexts;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace BounceBack.Models
 {
@@ -20,17 +22,20 @@ namespace BounceBack.Models
             public readonly Vector RenderSizeScale;
             public readonly Vector PositionOffset;
 
-            public PersonRenderer(Vector size, Vector position) {
+            public PersonRenderer(Vector size, Vector position)
+            {
                 this.RenderSizeScale = size;
                 this.PositionOffset = position;
             }
         }
 
-        public void RemovePersonAtFront() {
+        public void RemovePersonAtFront()
+        {
             this._peopleInLine.RemoveAt(0);
         }
 
-        public CasinoQueue() {
+        public CasinoQueue()
+        {
             this._peopleInLine = new List<Person>();
             this._renderers = new PersonRenderer[] {
                 new PersonRenderer(Vector.Create(2, 2), Vector.Create(300, 125)),
@@ -44,30 +49,37 @@ namespace BounceBack.Models
                 new PersonRenderer(Vector.Create(0.55f, 0.55f), Vector.Create(100, 130)),
                 new PersonRenderer(Vector.Create(0.3f, 0.3f), Vector.Create(125, 140)),
             };
-            this._background = new TextureContext("background.png") {
+            this._background = new TextureContext("background.png")
+            {
                 RenderPosition = Vector.Create(),
                 RenderSize = ServiceProvider.Canvas.GetResolution()
             };
-            this._fog = new SolidRectangleContext(new Annex.Data.RGBA(0, 0, 0, 30)) {
+            this._fog = new SolidRectangleContext(new Annex.Data.RGBA(0, 0, 0, 30))
+            {
                 RenderPosition = Vector.Create(),
                 RenderSize = ServiceProvider.Canvas.GetResolution()
             };
         }
 
-        public void Draw(ICanvas canvas) {
+        public void Draw(ICanvas canvas)
+        {
             canvas.Draw(this._background);
-            // We need to draw from back to front, but not too far back. 
-            for (int i = this._renderers.Length; i >= 0; i--) {
+            // We need to draw from back to front, but not too far back.
+            for (int i = this._renderers.Length; i >= 0; i--)
+            {
                 canvas.Draw(this._fog);
 
-                if (i < this._peopleInLine.Count) {
+                if (i < this._peopleInLine.Count)
+                {
                     var person = this._peopleInLine[i];
                     var renderer = this._renderers[i];
 
-                    foreach (var feature in Person.GetFeatureRenderOrder()) {
+                    foreach (var feature in Person.GetFeatureRenderOrder())
+                    {
                         var ctx = person.GetFeature(feature)?.TextureContext;
 
-                        if (ctx == null) {
+                        if (ctx == null)
+                        {
                             continue;
                         }
 
@@ -79,17 +91,22 @@ namespace BounceBack.Models
             }
         }
 
-        public void AddNewPersonToBack() {
-            var builder = new PersonBuilder()
-                .WithFeature(VisibleFeatureType.Bottom)
-                .WithFeature(VisibleFeatureType.Clothes)
-                .WithFeature(VisibleFeatureType.EyeSockets)
-                .WithFeature(VisibleFeatureType.HeadShapes)
-                .WithFeature(VisibleFeatureType.Mouths)
-                .WithFeature(VisibleFeatureType.Noses)
-                ;
+        public void AddNewPersonToBack()
+        {
+            void Work()
+            {
+                var builder = new PersonBuilder()
+                    .WithFeature(VisibleFeatureType.Bottom)
+                    .WithFeature(VisibleFeatureType.Clothes)
+                    .WithFeature(VisibleFeatureType.EyeSockets)
+                    .WithFeature(VisibleFeatureType.HeadShapes)
+                    .WithFeature(VisibleFeatureType.Mouths)
+                    .WithFeature(VisibleFeatureType.Noses);
 
-            this._peopleInLine.Add(builder.Build());
+                this._peopleInLine.Add(builder.Build());
+            }
+
+            new Thread(Work).Start();
         }
     }
 }
