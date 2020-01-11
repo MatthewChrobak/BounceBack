@@ -8,6 +8,8 @@ using Annex.Scenes.Components;
 using BounceBack.Models;
 using BounceBack.Scenes.Elements;
 using BounceBack.Containers;
+using Annex.Graphics.Contexts;
+using Annex.Data.Shared;
 
 namespace BounceBack.Scenes
 {
@@ -19,6 +21,10 @@ namespace BounceBack.Scenes
         private TopScrollbar topScrollbar;
         private int _timeLimit = 5000;
         private int timeLimitCount = 0;
+
+        private TextureContext _bouncer;
+        private TextureContext _timerBar;
+
 
         private readonly ActionButtonContainer _actionButtonContainer;
 
@@ -37,8 +43,8 @@ namespace BounceBack.Scenes
 
             this._actionButtonContainer = new ActionButtonContainer()
             {
-                AcceptButtonEvent = this.ActionButtonClicked,
-                RejectButtonEvent = this.ActionButtonClicked
+                AcceptButtonEvent = this.AcceptActionButtonClicked,
+                RejectButtonEvent = this.RejectActionButtonClicked
             };
             this._actionButtonContainer.SetPositionUpdateChildrenRelative(300, 500);
 
@@ -52,17 +58,48 @@ namespace BounceBack.Scenes
             //    GetTimeRatio();
             //    return ControlEvent.NONE;
             //}, 500, 0);
+
+            DrawBouncer();
+            StartTimeLimit();
+
+            this.Events.AddEvent("timer", PriorityType.ANIMATION, () =>
+            {
+                if(timeLimitCount >= 1)
+                {                    
+                    _timerBar.RenderSize = new ScalingVector(Vector.Create(150, 50), Vector.Create(GetTimeRatio(), 1));
+                }
+                return ControlEvent.NONE;
+            }, 100);
         }
 
-        private void ActionButtonClicked()
+        private void AcceptActionButtonClicked()
+        {
+            this._casinoQueue.RemovePersonAtFront();
+            this._casinoQueue.AddNewPersonToBack();            
+
+            ResetTimeLimit();
+        }
+
+        private void RejectActionButtonClicked()
         {
             this._casinoQueue.RemovePersonAtFront();
             this._casinoQueue.AddNewPersonToBack();
+
+            _bouncer.SourceTextureName = "IMG_0331.png";
+            this.Events.AddEvent("", PriorityType.ANIMATION, () =>
+            {
+                _bouncer.SourceTextureName = "IMG_0332.png";
+                return ControlEvent.REMOVE;
+            }, 1000, 1000);
+
+            ResetTimeLimit();
         }
 
         public override void Draw(ICanvas canvas)
         {
             this._casinoQueue.Draw(canvas);
+            canvas.Draw(this._timerBar);
+            canvas.Draw(this._bouncer);
             base.Draw(canvas);
         }
 
@@ -77,10 +114,17 @@ namespace BounceBack.Scenes
             timeLimitCount++;
             return ControlEvent.NONE;
         }
-
+        
         public void StartTimeLimit()
         {
             this.Events.AddEvent(_timelimitEvent, PriorityType.LOGIC, TimeLimit, interval_ms: _timeLimit);
+            _timerBar = new TextureContext("background.png")
+            {
+                RenderPosition = Vector.Create(ServiceProvider.Canvas.GetResolution().X - 250, 100),
+                RenderSize = new ScalingVector(Vector.Create(150, 50), Vector.Create(GetTimeRatio(), 1)),
+                UseUIView = true
+                //SourceTextureRect = new IntRect(0, 0, new ScalingInt(150, (int)(1 - GetTimeRatio())), 100)                
+            };
         }
 
         public void ResetTimeLimit()
@@ -98,14 +142,14 @@ namespace BounceBack.Scenes
             this.Events.RemoveEvent(_timelimitEvent);
         }
 
-        public float GetTimeRatio()
+        public Float GetTimeRatio()
         {
-            float ratio = 0;
+            Float ratio = new Float();
             GameEvent eventTimer = this.Events.GetEvent(_timelimitEvent);
 
             if (eventTimer != null)
             {
-                ratio = ( eventTimer.GetTimeBeforeNextInvocation()/ (float)_timeLimit);
+                ratio = new Float((float)eventTimer.GetTimeBeforeNextInvocation()/_timeLimit);
             }
             return ratio;
         }
@@ -125,5 +169,14 @@ namespace BounceBack.Scenes
         //    topScrollbar.PressedOnButtons(e.WorldX, e.WorldY);
         //    ResetTimeLimit();
         //}
+
+        public void DrawBouncer()
+        {
+            _bouncer = new TextureContext("IMG_0332.png")
+            {
+                RenderPosition = Vector.Create(ServiceProvider.Canvas.GetResolution().X-700, ServiceProvider.Canvas.GetResolution().Y - 500),
+                RenderSize = Vector.Create(750, 500)
+            };
+        }
     }
 }
