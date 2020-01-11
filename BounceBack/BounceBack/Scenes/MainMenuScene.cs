@@ -13,7 +13,7 @@ namespace BounceBack.Scenes
     {
         private readonly TextureContext _backgroundTextureContext;
         private readonly StartButton _startButton;
-        private const string _musicId = "background music";
+        private const string _musicId = "main menu background music";
 
         public MainMenuScene()
         {
@@ -26,7 +26,7 @@ namespace BounceBack.Scenes
             this._backgroundTextureContext.RenderSize = ServiceProvider.Canvas.GetResolution();
             this._startButton.Size.Set(ServiceProvider.Canvas.GetResolution());
 
-            ServiceProvider.AudioManager.PlayBufferedAudio("club.wav", _musicId, true);
+            ServiceProvider.AudioManager.PlayBufferedAudio("mainmenu.wav", _musicId, true);
 
             this.Events.AddEvent(PriorityType.GRAPHICS, this._startButton.GetAnimationEvent());
         }
@@ -39,7 +39,7 @@ namespace BounceBack.Scenes
 
         private void ChangeSceneToGameScene(Button button, MouseButtonEvent e)
         {
-            if (button == this._startButton && e is MouseButtonPressedEvent ev && ev.Button == MouseButton.Left)
+            if (button == this._startButton && e is MouseButtonReleasedEvent ev && ev.Button == MouseButton.Left)
             {
                 ServiceProvider.AudioManager.StopAllAudio(_musicId);
                 ServiceProvider.SceneManager.LoadScene<FirstScene>();
