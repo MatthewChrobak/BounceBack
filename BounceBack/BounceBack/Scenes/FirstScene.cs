@@ -3,6 +3,7 @@ using Annex;
 using Annex.Events;
 using Annex.Graphics;
 using Annex.Graphics.Events;
+using Annex.Scenes;
 using Annex.Scenes.Components;
 using BounceBack.Models;
 using BounceBack.Scenes.Elements;
@@ -99,6 +100,14 @@ namespace BounceBack.Scenes
             }
 
 
+        }
+
+        public override void HandleKeyboardKeyPressed(KeyboardKeyPressedEvent e)
+        {
+            if (e.Key == KeyboardKey.Tilde)
+            {
+                Debug.ToggleDebugOverlay();
+            }
         }
 
         //public override void HandleMouseButtonPressed(MouseButtonPressedEvent e)

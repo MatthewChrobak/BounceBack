@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace BounceBack.Models
@@ -32,7 +33,7 @@ namespace BounceBack.Models
                 return this;
             }
 
-            var features = VisibleFeature.GetFeaturesTextures(type);
+            var features = VisibleFeature.VisibleFeatures[type];
             this._person.SetFeature(type, features.Random());
             return this;
         }
@@ -40,7 +41,7 @@ namespace BounceBack.Models
 
     public static class Extensions
     {
-        public static string Random(this IEnumerable<string> collection) {
+        public static VisibleFeature Random(this IEnumerable<VisibleFeature> collection) {
             int index = RNG.Next(0, collection.Count());
             return collection.ElementAt(index);
         }
