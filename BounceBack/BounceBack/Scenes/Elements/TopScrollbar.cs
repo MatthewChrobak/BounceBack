@@ -21,7 +21,7 @@ namespace BounceBack.Scenes.Elements
 
         public TopScrollbar() : base("") {
             this._offset = Vector.Create(100, 0);
-            this.Size.Set(ServiceProvider.Canvas.GetResolution());
+            this.Size.Set(ServiceProvider.Canvas.GetResolution().X, 100);
             this._leftArrow = new TextureContext("icon-1.png") {
                 RenderPosition = Vector.Create(0, 0),
                 RenderSize = Vector.Create(100, 100),
