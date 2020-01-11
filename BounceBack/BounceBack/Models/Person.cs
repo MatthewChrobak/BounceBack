@@ -1,7 +1,5 @@
-﻿using System;
-using Annex;
+﻿using Annex;
 using Annex.Data;
-using System;
 using System.Collections.Generic;
 
 namespace BounceBack.Models
@@ -28,6 +26,21 @@ namespace BounceBack.Models
                 VisibleFeatureType.Shoes,
                 VisibleFeatureType.Accessories,
             };
+        }
+
+        public static Person New() {
+            var builder = new PersonBuilder()
+                .WithFeature(VisibleFeatureType.Accessories)
+                .WithFeature(VisibleFeatureType.Bottom)
+                .WithFeature(VisibleFeatureType.NakedBody)
+                .WithFeature(VisibleFeatureType.Clothes)
+                .WithFeature(VisibleFeatureType.EyeSockets)
+                .WithFeature(VisibleFeatureType.HeadShapes)
+                .WithFeature(VisibleFeatureType.Mouths)
+                .WithFeature(VisibleFeatureType.Noses)
+                .WithFeature(VisibleFeatureType.Shoes)
+                ;
+            return builder.Build();
         }
 
         public Person() {
