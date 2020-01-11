@@ -12,11 +12,11 @@ namespace Annex.Scenes.Components
 
         }
 
-        public override void HandleMouseButtonPressed(MouseButtonPressedEvent e)
-        {
-            base.HandleMouseButtonPressed(e);
-            OnClickHandler?.Invoke(this, e);
-        }
+        //public override void HandleMouseButtonPressed(MouseButtonPressedEvent e)
+        //{
+        //    base.HandleMouseButtonPressed(e);
+        //    OnClickHandler?.Invoke(this, e);
+        //}
 
         public override void HandleMouseButtonReleased(MouseButtonReleasedEvent e)
         {

@@ -1,19 +1,17 @@
 using Annex;
+using Annex.Data.Shared;
 using Annex.Events;
 using Annex.Graphics;
+using Annex.Graphics.Contexts;
 using Annex.Graphics.Events;
 using Annex.Scenes;
-using Annex.Scenes.Components;
 using BounceBack.Containers;
 using BounceBack.Models;
 using BounceBack.Scenes.Elements;
-using BounceBack.Containers;
-using Annex.Graphics.Contexts;
-using Annex.Data.Shared;
 
 namespace BounceBack.Scenes
 {
-    public class FirstScene : Scene
+    public class FirstScene : ClosableScene
     {
         public readonly CasinoQueue _casinoQueue;
         public readonly BanList BanList;
@@ -26,8 +24,9 @@ namespace BounceBack.Scenes
         private TextureContext _bouncer;
         private TextureContext _timerBar;
 
-
         private readonly ActionButtonContainer _actionButtonContainer;
+
+        private const string _musicId = "game background music";
 
         public FirstScene()
         {
@@ -67,6 +66,8 @@ namespace BounceBack.Scenes
                 }
                 return ControlEvent.NONE;
             }, 100);
+
+            ServiceProvider.AudioManager.PlayBufferedAudio("club.wav", _musicId, true);
         }
 
         private void AcceptActionButtonClicked()
