@@ -13,7 +13,7 @@ namespace BounceBack.Scenes
 {
     public class FirstScene : Scene
     {
-        public CasinoQueue _casinoQueue;
+        public CasinoLineQueue _casinoLineQueue;
 
         private const string _timelimitEvent = "set-time-limit";
         private TopScrollbar topScrollbar;
@@ -23,9 +23,9 @@ namespace BounceBack.Scenes
 
         public FirstScene()
         {
-            this._casinoQueue = new CasinoQueue();
-            this._casinoQueue.AddNewPersonToBack();
-            this._casinoQueue.AddNewPersonToBack();
+            this._casinoLineQueue = new CasinoLineQueue();
+            this._casinoLineQueue.AddNewPersonToBack();
+            this._casinoLineQueue.AddNewPersonToBack();
             //this._casinoQueue.AddNewPersonToBack();
             //this._casinoQueue.AddNewPersonToBack();
             //this._casinoQueue.AddNewPersonToBack();
@@ -55,13 +55,13 @@ namespace BounceBack.Scenes
 
         private void ActionButtonClicked()
         {
-            this._casinoQueue.RemovePersonAtFront();
-            this._casinoQueue.AddNewPersonToBack();
+            this._casinoLineQueue.RemovePersonAtFront();
+            this._casinoLineQueue.AddNewPersonToBack();
         }
 
         public override void Draw(ICanvas canvas)
         {
-            this._casinoQueue.Draw(canvas);
+            this._casinoLineQueue.Draw(canvas);
             base.Draw(canvas);
         }
 

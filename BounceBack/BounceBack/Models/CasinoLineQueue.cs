@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace BounceBack.Models
 {
-    public class CasinoQueue : IDrawableObject
+    public class CasinoLineQueue : IDrawableObject
     {
         private readonly TextureContext _background;
         private readonly SolidRectangleContext _fog;
@@ -32,7 +32,7 @@ namespace BounceBack.Models
             this._peopleInLine.RemoveAt(0);
         }
 
-        public CasinoQueue()
+        public CasinoLineQueue()
         {
             this._peopleInLine = new List<Person>();
             this._renderers = new PersonRenderer[] {
