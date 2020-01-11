@@ -6,7 +6,7 @@ using Annex.Scenes;
 using Annex.Scenes.Components;
 using BounceBack.Objects.Buttons;
 
-namespace BounceBack.Containers
+namespace BounceBack.Scenes.Elements
 {
     public class ActionButtonContainer : Container
     {

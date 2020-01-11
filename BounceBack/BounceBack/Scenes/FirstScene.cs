@@ -7,7 +7,6 @@ using Annex.Scenes;
 using Annex.Scenes.Components;
 using BounceBack.Models;
 using BounceBack.Scenes.Elements;
-using BounceBack.Containers;
 
 namespace BounceBack.Scenes
 {
