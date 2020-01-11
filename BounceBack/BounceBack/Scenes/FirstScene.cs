@@ -15,6 +15,7 @@ namespace BounceBack.Scenes
         private const string _timelimitEvent = "set-time-limit";
         private TopScrollbar topScrollbar;
         private int _timeLimit = 5000;
+        private int timeLimitCount = 0;
 
         public FirstScene() {
             this._casionQueue = new CasinoQueue();
@@ -35,12 +36,6 @@ namespace BounceBack.Scenes
             }, 1000);
 
             topScrollbar = new TopScrollbar();
-            //StartTimeLimit();
-
-            this.Events.AddEvent("test", PriorityType.LOGIC, () => {
-                GetTimeRatio();
-                return ControlEvent.NONE;
-            }, 500, 0);
         }
 
         public override void Draw(ICanvas canvas) {
@@ -50,10 +45,14 @@ namespace BounceBack.Scenes
         }
 
         private ControlEvent TimeLimit()
-        {
-            //FailureCount++
-            //Remove person from queue
-            Debug.Log("TimeLimitEvent");
+        {            
+            if(timeLimitCount >= 1)
+            {
+                //FailureCount++
+                //Remove person from queue
+                Debug.Log("TimeLimitEvent");
+            }
+            timeLimitCount++;
             return ControlEvent.NONE;
         }
 
@@ -68,22 +67,26 @@ namespace BounceBack.Scenes
             {
                 Debug.Log("Removed TimeLimitEvent");
             }
+            timeLimitCount = 0;
             this.Events.AddEvent(_timelimitEvent, PriorityType.LOGIC, TimeLimit, interval_ms: _timeLimit);
         }
 
-        public void GetTimeRatio()
+        public void StopTimeLimit()
         {
-            float ratio;
+            this.Events.RemoveEvent(_timelimitEvent);
+        }
 
+        public float GetTimeRatio()
+        {
+            float ratio = 0;
             GameEvent eventTimer = this.Events.GetEvent(_timelimitEvent);
 
             if(eventTimer != null)
             {
-                ratio = 1 - ( eventTimer.GetInterval()/ (float)_timeLimit);
-                Debug.Log(ratio.ToString());
+                ratio = ( eventTimer.GetTimeBeforeNextInvocation()/ (float)_timeLimit);
             }
-            
 
+            return ratio;
         }
 
         public override void HandleMouseButtonPressed(MouseButtonPressedEvent e)
