@@ -27,7 +27,6 @@ namespace BounceBack.Scenes
             this._casionQueue.AddNewPersonToBack();
             this._casionQueue.AddNewPersonToBack();
             this._casionQueue.AddNewPersonToBack();
-            this._casionQueue.AddNewPersonToBack();
 
             this.Events.AddEvent("", PriorityType.LOGIC, () => {
                 this._casionQueue.RemovePersonAtFront();

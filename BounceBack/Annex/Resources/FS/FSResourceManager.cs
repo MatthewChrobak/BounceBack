@@ -52,7 +52,12 @@ namespace Annex.Resources.FS
         }
 
         public override IEnumerable<string> GetResourcesWithPrefix(string prefix) {
-            return this._resources.Keys.Where(key => key.StartsWith(prefix));
+            foreach (var file in Directory.GetFiles(this._resourcePath, "*", SearchOption.AllDirectories)) {
+                string path = file.Remove(0, this._resourcePath.Length);
+                if (path.StartsWith(prefix)) {
+                    yield return path.Replace("\\", "/");
+                }
+            }
         }
     }
 }

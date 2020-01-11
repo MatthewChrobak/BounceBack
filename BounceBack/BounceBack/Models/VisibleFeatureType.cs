@@ -3,6 +3,7 @@
     public enum VisibleFeatureType
     {
         Hair = 0,
+        NakedBody,
         Eyebrows,
         Noses,
         Mouths,
@@ -16,6 +17,8 @@
         Arm,
         Clothes,
         EyeSockets,
+        Shoes,
+        Accessories,
         VISIBLEFEATURETYPE_COUNT,
     }
 }

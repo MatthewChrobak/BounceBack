@@ -33,7 +33,10 @@ namespace BounceBack.Models
             }
 
             var features = VisibleFeature.GetFeaturesTextures(type);
-            this._person.SetFeature(type, features.Random());
+            var feature = features.RandomOrDefault();
+            if (feature != null) {
+                this._person.SetFeature(type, feature);
+            }
             return this;
         }
     }
@@ -42,6 +45,15 @@ namespace BounceBack.Models
     {
         public static string Random(this IEnumerable<string> collection) {
             int index = RNG.Next(0, collection.Count());
+            return collection.ElementAt(index);
+        }
+
+        public static string? RandomOrDefault(this IEnumerable<string> collection) {
+            int count = collection.Count();
+            int index = RNG.Next(0, count);
+            if (index >= count) {
+                return null;
+            }
             return collection.ElementAt(index);
         }
     }

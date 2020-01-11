@@ -81,12 +81,15 @@ namespace BounceBack.Models
 
         public void AddNewPersonToBack() {
             var builder = new PersonBuilder()
+                .WithFeature(VisibleFeatureType.Accessories)
                 .WithFeature(VisibleFeatureType.Bottom)
+                .WithFeature(VisibleFeatureType.NakedBody)
                 .WithFeature(VisibleFeatureType.Clothes)
                 .WithFeature(VisibleFeatureType.EyeSockets)
                 .WithFeature(VisibleFeatureType.HeadShapes)
                 .WithFeature(VisibleFeatureType.Mouths)
                 .WithFeature(VisibleFeatureType.Noses)
+                .WithFeature(VisibleFeatureType.Shoes)
                 ;
 
             this._peopleInLine.Add(builder.Build());

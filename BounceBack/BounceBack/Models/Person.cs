@@ -1,5 +1,6 @@
 ﻿using Annex;
 using Annex.Data;
+using System;
 using System.Collections.Generic;
 
 namespace BounceBack.Models
@@ -15,13 +16,16 @@ namespace BounceBack.Models
         static Person() {
             _featureOrder = new VisibleFeatureType[] {
                 VisibleFeatureType.Arm,
+                VisibleFeatureType.NakedBody,
                 VisibleFeatureType.Bottom,
-                VisibleFeatureType.Clothes,
                 VisibleFeatureType.HeadShapes,
+                VisibleFeatureType.Clothes,
                 VisibleFeatureType.Mouths,
                 VisibleFeatureType.Noses,
                 VisibleFeatureType.Ears,
                 VisibleFeatureType.EyeSockets,
+                VisibleFeatureType.Shoes,
+                VisibleFeatureType.Accessories,
             };
         }
 
@@ -33,6 +37,10 @@ namespace BounceBack.Models
 
         public static IEnumerable<VisibleFeatureType> GetFeatureRenderOrder() {
             return _featureOrder;
+        }
+
+        internal void SetFeature(VisibleFeatureType type, object p) {
+            throw new NotImplementedException();
         }
 
         public void SetFeature(VisibleFeatureType featureType, string textureName) {
