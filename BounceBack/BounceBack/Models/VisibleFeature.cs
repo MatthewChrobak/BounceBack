@@ -20,6 +20,17 @@ namespace BounceBack.Models
         internal static IEnumerable<string> GetFeaturesTextures(VisibleFeatureType type) {
             var textures = ServiceProvider.ResourceManagerRegistry.GetResourceManager(ResourceType.Textures);
             return textures.GetResourcesWithPrefix(type.ToString());
-        }   
+        }
+
+        public override bool Equals(object? obj) {
+            if (obj is VisibleFeature feature) {
+                return feature.TextureContext.SourceTextureName.Value == this.TextureContext.SourceTextureName.Value;
+            }
+            return false;
+        }
+
+        public override int GetHashCode() {
+            return this.TextureContext.SourceTextureName.Value.GetHashCode();
+        }
     }
 }
