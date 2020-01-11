@@ -13,7 +13,7 @@ using Annex.Data.Shared;
 
 namespace BounceBack.Scenes
 {
-    public class FirstScene : Scene
+    public class FirstScene : ClosableScene
     {
         public readonly CasinoQueue _casinoQueue;
         public readonly BanList BanList;
