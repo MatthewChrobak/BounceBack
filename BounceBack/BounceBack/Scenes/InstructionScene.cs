@@ -79,7 +79,7 @@ namespace BounceBack.Scenes
 
             if (!e.Handled && _cutSceneDone)
             {
-                ServiceProvider.SceneManager.LoadScene<FirstScene>();
+                ServiceProvider.SceneManager.LoadScene<FirstScene>(true);
             }
         }
 
@@ -87,7 +87,7 @@ namespace BounceBack.Scenes
         {
             if (_cutSceneDone)
             {
-                ServiceProvider.SceneManager.LoadScene<FirstScene>();
+                ServiceProvider.SceneManager.LoadScene<FirstScene>(true);
             }
         }
     }

@@ -6,6 +6,7 @@ using Annex.Graphics;
 using Annex.Graphics.Contexts;
 using Annex.Graphics.Events;
 using Annex.Scenes;
+using BounceBack.Models;
 
 namespace BounceBack.Scenes
 {
@@ -129,6 +130,7 @@ namespace BounceBack.Scenes
                 }
                 else if (IsHoverOverBouncer())
                 {
+                    ScoreSingleton.Instance.ResetValues();
                     ServiceProvider.SceneManager.LoadScene<FirstScene>(true);
                 }
             }

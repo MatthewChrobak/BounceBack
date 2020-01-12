@@ -43,7 +43,7 @@ namespace Annex.Graphics.Sfml
             this._camera = new Camera(this._resolution);
             this._uiView = new View(new Vector2f(this._resolution.X / 2, this._resolution.Y / 2), new Vector2f(this._resolution.X, this._resolution.Y));
             this._gameContentView = new View();
-            this._buffer = new RenderWindow(new VideoMode((uint)this._resolution.X, (uint)this._resolution.Y), "Window", Styles.Fullscreen);
+            this._buffer = new RenderWindow(new VideoMode((uint)this._resolution.X, (uint)this._resolution.Y), "Window");
 
             // Resources
             var resources = ServiceProvider.ResourceManagerRegistry;
