@@ -53,7 +53,7 @@ namespace BounceBack.Objects.Buttons
             {
                 this._blinkerTextureContext.SourceTextureName.Set(this._animationTextures[++this._animationIndex % this._animationTextures.Length]);
                 return ControlEvent.NONE;
-            }, 200, 0);
+            }, 50, 0);
         }
 
         public override void Draw(ICanvas canvas)
