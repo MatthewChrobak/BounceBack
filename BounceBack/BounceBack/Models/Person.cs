@@ -50,16 +50,12 @@ namespace BounceBack.Models
                 if (feature == VisibleFeatureType.Ears) {
                     continue;
                 }
-                if (feature == VisibleFeatureType.Moles) {
-                    continue;
-                }
                 vals.Add(feature);
             }
 
             numberOfFeatures = Math.Max(1, numberOfFeatures);
             numberOfFeatures = Math.Min(5, numberOfFeatures);
 
-            results.Add(VisibleFeatureType.Hair);
             while (results.Count != numberOfFeatures) {
                 int index = RNG.Next(0, vals.Count);
                 results.Add(vals[index]);
@@ -121,11 +117,13 @@ namespace BounceBack.Models
 
         public bool Equals(Person p, IEnumerable<VisibleFeatureType> features) {
             foreach (var feature in features) {
-                var f1 = p.GetFeature(feature)?.TextureContext.SourceTextureName;
-                var f2 = this.GetFeature(feature)?.TextureContext.SourceTextureName;
+                var f1 = p.GetFeature(feature)?.TextureContext.SourceTextureName.Value;
+                var f2 = this.GetFeature(feature)?.TextureContext.SourceTextureName.Value;
                 if (f1 == null || f1 == null) {
                     continue;
                 }
+                f1 = f1?.Replace("(f)", "")?.Replace("(m)", "");
+                f2 = f2?.Replace("(f)", "")?.Replace("(m)", "");
                 if (f1 != f2) {
                     return false;
                 }
