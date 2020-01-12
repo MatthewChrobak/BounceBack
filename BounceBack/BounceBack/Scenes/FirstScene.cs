@@ -293,7 +293,7 @@ namespace BounceBack.Scenes
 
         public void IncrementPlayerFailures()
         {
-            //_playerFailures++;
+            _playerFailures++;
             if (_playerFailures >= _maxPlayerFailures)
             {
                 ServiceProvider.AudioManager.StopAllAudio();
