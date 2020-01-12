@@ -19,7 +19,7 @@ namespace BounceBack.Scenes
         private TopScrollbar topScrollbar;
 
         private const string _timelimitEvent = "set-time-limit";
-        private int _timeLimit = 5000;
+        private int _timeLimit = 10000;
         private int timeLimitCount = 0;
 
         private TextureContext _bouncer;
@@ -41,8 +41,7 @@ namespace BounceBack.Scenes
 
         private int _personCount = 0;
         private int _maxPersonCount = 10;
-
-        private int _difficultyLevel = 1;
+        
 
         private readonly ActionButtonContainer _actionButtonContainer;
 
@@ -72,7 +71,7 @@ namespace BounceBack.Scenes
             _playerFailureImage = new TextureContext[_maxPlayerFailures];
             _playerFailureImageBackground = new TextureContext[_maxPlayerFailures];
 
-            DrawPlayerScore();
+            //DrawPlayerScore();
             DrawBouncer();
             DrawTimerBar();
             StartTimeLimit();
@@ -97,7 +96,7 @@ namespace BounceBack.Scenes
                         _timerBar.RenderColor = RGBA.Green;
                     }
                     _timerBar.RenderSize = new ScalingVector(Vector.Create(150, 25), Vector.Create(GetTimeRatio(), 1));
-                    _timerText.RenderText = System.String.Format("{0:0}", System.Math.Ceiling(GetTimeRatio() * 5));
+                    _timerText.RenderText = System.String.Format("{0:0}", System.Math.Ceiling(GetTimeRatio() * _timeLimit/1000));
                 }
                 return ControlEvent.NONE;
             }, 100);
@@ -143,7 +142,7 @@ namespace BounceBack.Scenes
             canvas.Draw(this._timerBarBackground);
             canvas.Draw(this._timerBar);
             canvas.Draw(this._timerText);
-            canvas.Draw(this._playerTextScore);
+            //canvas.Draw(this._playerTextScore);
             canvas.Draw(this._bouncer);
 
             for(int i = 0; i < _maxPlayerFailures; i++)
@@ -166,7 +165,6 @@ namespace BounceBack.Scenes
             if(timeLimitCount >= 1)
             {
                 IncrementPlayerFailures();
-                UpdatePlayerScore(-100);
 
                 this._casinoQueue.RemovePersonAtFront();
                 this._casinoQueue.AddNewPersonToBack();
@@ -217,7 +215,8 @@ namespace BounceBack.Scenes
             if (_casinoQueue.PersonInFront == null)
             {
                 ScoreSingleton.Instance.difficultyLevel++;
-                ServiceProvider.SceneManager.LoadScene<FirstScene>(true);
+                //ServiceProvider.SceneManager.LoadScene<FirstScene>(true);
+                ServiceProvider.SceneManager.LoadScene<LevelTransitionScene>(true);
             }
         }
 
@@ -246,26 +245,27 @@ namespace BounceBack.Scenes
             };
         }
 
+        /*
         public void UpdatePlayerScore(int score)
         {            
             _playerScore = System.Math.Clamp(_playerScore + score, 0, int.MaxValue);
             _playerTextScore.RenderText = "Score: " + _playerScore.ToString();
         }
-
+        */
         public void DrawPlayerFailures()
         {            
             for(int i = 0; i < _maxPlayerFailures; i++)
             {
                 _playerFailureImageBackground[i] = new TextureContext("IMG_0348.png")
                 {
-                    RenderPosition = Vector.Create(75 * i, 100),
+                    RenderPosition = Vector.Create(75 * i, ServiceProvider.Canvas.GetResolution().Y-100),
                     RenderSize = Vector.Create(100, 100),
                     UseUIView = true
                 };
 
                 _playerFailureImage[i] = new TextureContext("IMG_0349.png")
                 {
-                    RenderPosition = Vector.Create(75 * i, 100),
+                    RenderPosition = Vector.Create(75 * i, ServiceProvider.Canvas.GetResolution().Y - 100),
                     RenderSize = Vector.Create(100, 100),
                     UseUIView = true
                 };
@@ -274,7 +274,7 @@ namespace BounceBack.Scenes
 
         public void IncrementPlayerFailures()
         {
-            _playerFailures++;
+            //_playerFailures++;
             if(_playerFailures >= _maxPlayerFailures)
             {
                 ServiceProvider.SceneManager.LoadScene<GameOverScene>(true);
@@ -296,7 +296,7 @@ namespace BounceBack.Scenes
                 RenderColor = RGBA.Black,
                 UseUIView = true
             };
-            _timerText = new TextContext("5.0", "default.ttf")
+            _timerText = new TextContext(System.String.Format("{0:0}", System.Math.Ceiling(GetTimeRatio() * _timeLimit / 1000)), "default.ttf")
             {
                 RenderPosition = Vector.Create(ServiceProvider.Canvas.GetResolution().X - 250, 100),
                 FontSize = 30,
