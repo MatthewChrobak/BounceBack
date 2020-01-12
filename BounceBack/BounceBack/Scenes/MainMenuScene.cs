@@ -42,7 +42,7 @@ namespace BounceBack.Scenes
             if (button == this._startButton && e is MouseButtonReleasedEvent ev && ev.Button == MouseButton.Left)
             {
                 ServiceProvider.AudioManager.StopAllAudio(_musicId);
-                ServiceProvider.SceneManager.LoadScene<FirstScene>();
+                ServiceProvider.SceneManager.LoadScene<InstructionScene>();
             }
         }
     }
