@@ -65,9 +65,18 @@ namespace BounceBack.Models
                     continue;
                 }
                 string texture = feature.TextureContext.SourceTextureName.Value;
-                texture = texture.Remove(0, texture.IndexOf('/') + 1);
+                texture = texture.Remove(0, texture.IndexOf('/') + 1).Replace("(f)", "").Replace("(m)", "");
                 string color = featureType == VisibleFeatureType.Hair ? BannedPerson.HairColorName : string.Empty;
-                this.DisplayString.Add($"{featureType}: {color} {texture.Substring(0, texture.IndexOf('.'))}");
+                string featureTypeString = featureType.ToString();
+
+                if (featureType == VisibleFeatureType.EyeSockets) {
+                    featureTypeString = "Eyes";
+                }
+                if (featureType == VisibleFeatureType.Clothes) {
+                    featureTypeString = "Top";
+                }
+
+                this.DisplayString.Add($"{featureTypeString}: {color} {texture.Substring(0, texture.IndexOf('.'))}");
             }
         }
 
