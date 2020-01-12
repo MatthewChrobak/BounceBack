@@ -6,6 +6,7 @@ using Annex.Graphics;
 using Annex.Graphics.Contexts;
 using Annex.Graphics.Events;
 using Annex.Scenes;
+using Annex.Scenes.Components;
 using BounceBack.Containers;
 using BounceBack.Models;
 using BounceBack.Scenes.Elements;
@@ -216,6 +217,41 @@ namespace BounceBack.Scenes
             if (e.Key == KeyboardKey.Tilde)
             {
                 Debug.ToggleDebugOverlay();
+            }
+
+            if (e.Key == KeyboardKey.Right)
+            {
+                this._actionButtonContainer._acceptButton.HandleMouseButtonPressed(new MouseButtonPressedEvent()
+                {
+                    Button = MouseButton.Left
+                });
+            }
+
+            if (e.Key == KeyboardKey.Left)
+            {
+                this._actionButtonContainer._rejectButton.HandleMouseButtonPressed(new MouseButtonPressedEvent()
+                {
+                    Button = MouseButton.Left
+                });
+            }
+        }
+
+        public override void HandleKeyboardKeyReleased(KeyboardKeyReleasedEvent e)
+        {
+            if (e.Key == KeyboardKey.Right)
+            {
+                this._actionButtonContainer._acceptButton.HandleMouseButtonReleased(new MouseButtonReleasedEvent()
+                {
+                    Button = MouseButton.Left
+                });
+            }
+
+            if (e.Key == KeyboardKey.Left)
+            {
+                this._actionButtonContainer._rejectButton.HandleMouseButtonReleased(new MouseButtonReleasedEvent()
+                {
+                    Button = MouseButton.Left
+                });
             }
         }
 

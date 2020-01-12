@@ -15,8 +15,8 @@ namespace BounceBack.Containers
         public Action AcceptButtonEvent { get; set; }
         public Action RejectButtonEvent { get; set; }
 
-        private readonly AcceptButton _acceptButton;
-        private readonly RejectButton _rejectButton;
+        public readonly AcceptButton _acceptButton;
+        public readonly RejectButton _rejectButton;
 
         public ActionButtonContainer() {
             _acceptButton = new AcceptButton();
