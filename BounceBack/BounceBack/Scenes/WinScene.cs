@@ -4,9 +4,6 @@ using Annex.Data.Shared;
 using Annex.Graphics;
 using Annex.Graphics.Contexts;
 using Annex.Graphics.Events;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace BounceBack.Scenes
 {
@@ -24,9 +21,11 @@ namespace BounceBack.Scenes
 
             this._continueText = new TextContext("Press any key to continue...", "default.ttf")
             {
-                RenderPosition = Vector.Create(260, 590),
+                RenderPosition = Vector.Create(380, 570),
                 FontSize = 36,
-                FontColor = RGBA.Purple
+                FontColor = new RGBA(120, 120, 120),
+                BorderColor = new RGBA(90, 40, 74),
+                BorderThickness = 2
             };
         }
 
