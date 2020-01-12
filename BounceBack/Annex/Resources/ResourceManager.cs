@@ -20,7 +20,7 @@ namespace Annex.Resources
                 this.Load(key);
             }
         }
-        protected abstract void Load(string key);
+        public abstract void Load(string key);
         public abstract object GetResource(string key);
 
         public void SetResourcePath(string resourcePath) {

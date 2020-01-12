@@ -22,7 +22,7 @@ namespace Annex.Resources.FS
             return this._resources[key];
         }
 
-        protected override void Load(string fullFilePath) {
+        public override void Load(string fullFilePath) {
             Debug.Assert(this._resourcePath != null);
             Debug.Assert(this._resourceLoader_FromString != null);
             Debug.Assert(File.Exists(fullFilePath));

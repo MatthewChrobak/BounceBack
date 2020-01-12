@@ -29,7 +29,7 @@ namespace Annex.Resources.Pak
             return this._resources[key];
         }
 
-        protected override void Load(string key) {
+        public override void Load(string key) {
             Debug.Assert(this._resourceLoader_FromBytes != null);
 
             if (this._resourceValidator == null || this._resourceValidator(key)) {
