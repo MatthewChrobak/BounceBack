@@ -16,6 +16,7 @@ namespace BounceBack.Scenes
         {
             if (e.Key == KeyboardKey.Escape)
             {
+                e.Handled = true;
                 ServiceProvider.SceneManager.LoadScene<GameClosing>();
             }
 
