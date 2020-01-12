@@ -12,7 +12,6 @@ namespace BounceBack.Scenes.Elements
 {
     public class TopScrollbar : UIElement
     {
-        private readonly SolidRectangleContext _background;
         private readonly TextureContext _leftArrow;
         private readonly TextureContext _rightArrow;
         private Vector _offset;
@@ -20,43 +19,51 @@ namespace BounceBack.Scenes.Elements
         private const int height = 100;
 
         private List<TextContext> _bannedPeopleDescriptions;
+        private List<SolidRectangleContext> _descriptionBackgrounds;
 
         public TopScrollbar() : base("") {
             this._offset = Vector.Create(100, 0);
-            this._background = new SolidRectangleContext(new RGBA(25, 25, 50, 25)) {
-                RenderSize = Vector.Create(ServiceProvider.Canvas.GetResolution().X, height)
-            };
             this.Size.Set(ServiceProvider.Canvas.GetResolution().X, height);
-            this._leftArrow = new TextureContext("icon-1.png") {
+            this._leftArrow = new TextureContext("topbar/img_3750.png") {
                 RenderPosition = Vector.Create(0, 0),
                 RenderSize = Vector.Create(100, height),
                 UseUIView = true
             };
 
-            this._rightArrow = new TextureContext("icon-1.png") {
+            this._rightArrow = new TextureContext("topbar/img_3749.png") {
                 RenderPosition = Vector.Create(ServiceProvider.Canvas.GetResolution().X - 100, 0),
                 RenderSize = Vector.Create(100, height),
                 UseUIView = true
             };
 
             this._bannedPeopleDescriptions = new List<TextContext>();
+            this._descriptionBackgrounds = new List<SolidRectangleContext>();
         }
 
         internal void OnAddToBanList(BanListEntry bannedPerson) {
+            this._descriptionBackgrounds.Add(new SolidRectangleContext(new RGBA(255, 246, 159)) {
+                RenderPosition = new OffsetVector(Vector.Create(this._descriptionBackgrounds.Count * width + 10, 10), this._offset),
+                RenderSize = Vector.Create(width - 20, height - 20),
+                UseUIView = true,
+                RenderBorderSize = 5,
+                RenderBorderColor = new RGBA(255, 237, 77)
+            });
             this._bannedPeopleDescriptions.Add(new TextContext(string.Join("\r\n", bannedPerson.DisplayString), "default.ttf") {
-                RenderPosition = new OffsetVector(Vector.Create(this._bannedPeopleDescriptions.Count * width, 0), this._offset),
+                RenderPosition = new OffsetVector(Vector.Create(this._bannedPeopleDescriptions.Count * width + 15, 10), this._offset),
                 Alignment = new TextAlignment() {
                     HorizontalAlignment = HorizontalAlignment.Left,
-                    Size = Vector.Create(width, 150),
+                    Size = Vector.Create(width - 30, height - 20),
                     VerticalAlignment = VerticalAlignment.Top
                 },
-                FontColor = RGBA.White,
+                FontColor = RGBA.Black,
                 UseUIView = true
             });
         }
 
         public override void Draw(ICanvas canvas) {
-            canvas.Draw(this._background);
+            foreach (var background in this._descriptionBackgrounds) {
+                canvas.Draw(background);
+            }
             foreach (var person in this._bannedPeopleDescriptions) {
                 canvas.Draw(person);
             }
@@ -74,4 +81,4 @@ namespace BounceBack.Scenes.Elements
             }
         }
     }
-}
+} 

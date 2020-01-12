@@ -5,12 +5,13 @@ namespace BounceBack.Objects.Buttons
 {
     public class RejectButton : Button
     {
-        private const string NormalButtonTexture = "Buttons/BackButton/Back unpressed.png";
-        private const string PressedButtonTexture = "Buttons/BackButton/Back pressed.png";
+        private const string NormalButtonTexture = "newbackandgobuttons/img_3760.png";
+        private const string PressedButtonTexture = "newbackandgobuttons/img_3759.png";
 
         public RejectButton()
         {
             ImageTextureName.Set(NormalButtonTexture);
+            Size.Set(200, 200);
         }
 
         public override void HandleMouseButtonPressed(MouseButtonPressedEvent e)

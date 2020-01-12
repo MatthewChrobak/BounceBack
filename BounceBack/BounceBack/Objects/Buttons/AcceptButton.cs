@@ -5,12 +5,13 @@ namespace BounceBack.Objects.Buttons
 {
     public class AcceptButton : Button
     {
-        private const string NormalButtonTexture = "Buttons/GoButton/Go unpressed.png";
-        private const string PressedButtonTexture = "Buttons/GoButton/Go pressed.png";
+        private const string NormalButtonTexture = "newbackandgobuttons/img_3761.png";
+        private const string PressedButtonTexture = "newbackandgobuttons/img_3757.png";
 
         public AcceptButton()
         {
             ImageTextureName.Set(NormalButtonTexture);
+            Size.Set(200, 200);
         }
 
         public override void HandleMouseButtonPressed(MouseButtonPressedEvent e)
