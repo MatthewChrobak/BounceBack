@@ -22,10 +22,25 @@ namespace BounceBack.Models
             }
         }
         
-        public int difficultyLevel = 1;
+        private int difficultyLevel = 1;
 
         private ScoreSingleton()
         {
+        }
+
+        public void IncreaseDifficulty()
+        {
+            difficultyLevel++;
+        }
+
+        public void DecreaseDifficulty()
+        {
+            difficultyLevel--;
+        }
+
+        public int GetDifficultyLevel()
+        {
+            return difficultyLevel;
         }
 
         public void ResetValues()

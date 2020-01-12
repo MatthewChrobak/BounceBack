@@ -36,12 +36,12 @@ namespace BounceBack.Scenes
 
         public override void HandleKeyboardKeyReleased(KeyboardKeyReleasedEvent e)
         {
-            ServiceProvider.SceneManager.LoadScene<FirstScene>();
+            ServiceProvider.SceneManager.LoadScene<FirstScene>(true);
         }
 
         public override void HandleMouseButtonReleased(MouseButtonReleasedEvent e)
         {
-            ServiceProvider.SceneManager.LoadScene<FirstScene>();
+            ServiceProvider.SceneManager.LoadScene<FirstScene>(true);
         }
     }
 }
