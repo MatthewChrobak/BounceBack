@@ -19,7 +19,7 @@ namespace BounceBack
             ServiceProvider.EventManager.GetEvent(ICanvas.DrawGameEventID).AttachTracker(tracker);
             Debug.AddDebugInformation(() => $"FPS: {tracker.LastCount}");
 
-            AnnexGame.Start<GameOverScene>();
+            AnnexGame.Start<LoadingScene>();
         }
     }
 }
