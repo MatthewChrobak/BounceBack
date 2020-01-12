@@ -76,7 +76,6 @@ namespace BounceBack.Models
                         }
                         if (feature == VisibleFeatureType.Arms ||
                             feature == VisibleFeatureType.Ears ||
-                            feature == VisibleFeatureType.Eyebrows ||
                             feature == VisibleFeatureType.EyeSockets ||
                             feature == VisibleFeatureType.HeadShapes ||
                             feature == VisibleFeatureType.Mouths ||

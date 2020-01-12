@@ -50,16 +50,12 @@ namespace BounceBack.Models
                 if (feature == VisibleFeatureType.Ears) {
                     continue;
                 }
-                if (feature == VisibleFeatureType.Moles) {
-                    continue;
-                }
                 vals.Add(feature);
             }
 
             numberOfFeatures = Math.Max(1, numberOfFeatures);
             numberOfFeatures = Math.Min(5, numberOfFeatures);
 
-            results.Add(VisibleFeatureType.Clothes);
             while (results.Count != numberOfFeatures) {
                 int index = RNG.Next(0, vals.Count);
                 results.Add(vals[index]);
@@ -126,11 +122,11 @@ namespace BounceBack.Models
                 if (f1 == null || f1 == null) {
                     continue;
                 }
+                f1 = f1?.Replace("(f)", "")?.Replace("(m)", "");
+                f2 = f2?.Replace("(f)", "")?.Replace("(m)", "");
                 if (f1 != f2) {
                     return false;
                 }
-                f1 = f1.Replace("(f)", "").Replace("(m)", "");
-                f2 = f2.Replace("(f)", "").Replace("(m)", "");
                 if (feature == VisibleFeatureType.Hair) {
                     if (p.HairColorName != this.HairColorName) {
                         return false;

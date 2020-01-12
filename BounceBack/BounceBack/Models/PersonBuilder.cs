@@ -76,7 +76,7 @@ namespace BounceBack.Models
         }
 
         public PersonBuilder WithFeature(VisibleFeatureType type) {
-            if (type == VisibleFeatureType.Bottom && this._isFemale) {
+            if (type == VisibleFeatureType.Bottom && this._isFemale && this._person.GetFeature(VisibleFeatureType.Clothes).TextureContext.SourceTextureName.Value.EndsWith("dress")) {
                 return this;
             }
 
