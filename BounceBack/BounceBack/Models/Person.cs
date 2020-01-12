@@ -83,7 +83,7 @@ namespace BounceBack.Models
         }
 
         public static Person New_PossiblyBanned() {
-            if (RNG.Next(0, 100) < 10) {
+            if (RNG.Next(0, 100) < 5 + (5 * ScoreSingleton.Instance.GetDifficultyLevel())) {
                 var scene = ServiceProvider.SceneManager.CurrentScene as FirstScene;
                 if (scene != null) {
                     var person = scene.BanList.GetRandomPerson();

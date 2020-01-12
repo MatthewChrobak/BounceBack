@@ -18,9 +18,11 @@ namespace BounceBack.Scenes
 
         private readonly int _timeForTransition = 3000;
 
+        private readonly string[] _backgroundName = new string[] { "level change.png", "Lvl2.png", "Lvl3.png" };
+
         public LevelTransitionScene()
         {
-            this._background = new TextureContext("level change.png")
+            this._background = new TextureContext(_backgroundName[ScoreSingleton.Instance.GetDifficultyLevel()-2])
             {
                 RenderSize = ServiceProvider.Canvas.GetResolution()
             };
@@ -39,9 +41,9 @@ namespace BounceBack.Scenes
 
         public void RenderTextLocation()
         {
-            if(ScoreSingleton.Instance.GetDifficultyLevel() == 2)
+            if(ScoreSingleton.Instance.GetDifficultyLevel() == 3)
             {
-                this._levelText.RenderPosition = Vector.Create(0, ServiceProvider.Canvas.GetResolution().Y - 100);
+                this._levelText.RenderPosition = Vector.Create(50, ServiceProvider.Canvas.GetResolution().Y - 100);
             }
             else
             {
