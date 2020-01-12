@@ -13,6 +13,24 @@ namespace BounceBack.Models
         public PersonBuilder() {
             this._person = new Person();
             this._isMale = RNG.Next(0, 100) < 50;
+
+            switch (RNG.Next(0, 5)) {
+                case 0:
+                case 1:
+                case 2:
+                case 3:
+                case 4:
+                default:
+                    break;
+            }
+
+            switch (RNG.Next(0, 2)) {
+                case 0:
+                    
+                case 1:
+                case 2:
+                    break;
+            }
         }
 
         public Person Build() {
@@ -26,15 +44,19 @@ namespace BounceBack.Models
         }
 
         public PersonBuilder WithFeature(VisibleFeatureType type) {
-            if (type == VisibleFeatureType.Clothes && this._isMale) {
-                return this;
-            }
             if (type == VisibleFeatureType.Bottom && this._isFemale) {
                 return this;
             }
 
             var features = VisibleFeature.VisibleFeatures[type];
             var feature = features.RandomOrDefault();
+
+            if (type == VisibleFeatureType.Clothes && this._isMale) {
+                while (feature.TextureContext.SourceTextureName.Value.Contains("dress")) {
+                    feature = features.RandomOrDefault();
+                }
+            }
+
             if (feature != null) {
                 this._person.SetFeature(type, feature);
             }

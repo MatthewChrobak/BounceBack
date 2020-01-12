@@ -80,7 +80,7 @@ namespace BounceBack.Models
         }
 
         public void AddNewPersonToBack() {
-            this._peopleInLine.Add(Person.New());
+            this._peopleInLine.Add(Person.New_PossiblyBanned());
         }
     }
 }

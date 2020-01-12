@@ -49,6 +49,15 @@ namespace BounceBack.Scenes
             this._casinoQueue = new CasinoQueue();
             this._casinoQueue.AddNewPersonToBack();
             this._casinoQueue.AddNewPersonToBack();
+            this._casinoQueue.AddNewPersonToBack();
+            this._casinoQueue.AddNewPersonToBack();
+            this._casinoQueue.AddNewPersonToBack();
+            this._casinoQueue.AddNewPersonToBack();
+            this._casinoQueue.AddNewPersonToBack();
+            this._casinoQueue.AddNewPersonToBack();
+            this._casinoQueue.AddNewPersonToBack();
+            this._casinoQueue.AddNewPersonToBack();
+            this._casinoQueue.AddNewPersonToBack();
 
             this._actionButtonContainer = new ActionButtonContainer()
             {

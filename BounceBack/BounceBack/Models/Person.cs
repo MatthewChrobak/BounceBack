@@ -1,5 +1,6 @@
 ﻿using Annex;
 using Annex.Data;
+using BounceBack.Scenes;
 using System;
 using System.Collections.Generic;
 
@@ -10,8 +11,10 @@ namespace BounceBack.Models
         private static VisibleFeatureType[] _featureOrder;
 
         private VisibleFeature?[] _features;
-        private RGBA _skinColor;
-        private RGBA _hairColor;
+        public RGBA _skinColor;
+        public string SkinColorName;
+        public RGBA _hairColor;
+        public string HairColorName;
 
         static Person() {
             _featureOrder = new VisibleFeatureType[] {
@@ -24,7 +27,9 @@ namespace BounceBack.Models
                 VisibleFeatureType.Noses,
                 VisibleFeatureType.Ears,
                 VisibleFeatureType.EyeSockets,
+                VisibleFeatureType.Hair,
                 VisibleFeatureType.Shoes,
+                VisibleFeatureType.Arm,
                 VisibleFeatureType.Accessories,
             };
         }
@@ -34,6 +39,18 @@ namespace BounceBack.Models
             var results = new List<VisibleFeatureType>();
             foreach (var feature in (VisibleFeatureType[])(Enum.GetValues(typeof(VisibleFeatureType)))) {
                 if (feature == VisibleFeatureType.VISIBLEFEATURETYPE_COUNT) {
+                    continue;
+                }
+                if (feature == VisibleFeatureType.NakedBody) {
+                    continue;
+                }
+                if (feature == VisibleFeatureType.Arm) {
+                    continue;
+                }
+                if (feature == VisibleFeatureType.Ears) {
+                    continue;
+                }
+                if (feature == VisibleFeatureType.Moles) {
                     continue;
                 }
                 vals.Add(feature);
@@ -53,17 +70,32 @@ namespace BounceBack.Models
 
         public static Person New() {
             var builder = new PersonBuilder()
+                .WithFeature(VisibleFeatureType.Clothes)
                 .WithFeature(VisibleFeatureType.Accessories)
                 .WithFeature(VisibleFeatureType.Bottom)
                 .WithFeature(VisibleFeatureType.NakedBody)
-                .WithFeature(VisibleFeatureType.Clothes)
                 .WithFeature(VisibleFeatureType.EyeSockets)
+                .WithFeature(VisibleFeatureType.Arm)
                 .WithFeature(VisibleFeatureType.HeadShapes)
                 .WithFeature(VisibleFeatureType.Mouths)
                 .WithFeature(VisibleFeatureType.Noses)
+                .WithFeature(VisibleFeatureType.Hair)
                 .WithFeature(VisibleFeatureType.Shoes)
                 ;
             return builder.Build();
+        }
+
+        public static Person New_PossiblyBanned() {
+            if (RNG.Next(0, 100) < 10) {
+                var scene = ServiceProvider.SceneManager.CurrentScene as FirstScene;
+                if (scene != null) {
+                    var person = scene.BanList.GetRandomPerson();
+                    if (person != null) {
+                        return person;
+                    }
+                }
+            }
+            return Person.New();
         }
 
         public Person() {
@@ -84,6 +116,9 @@ namespace BounceBack.Models
             if (featureType == VisibleFeatureType.Hair)
             {
                 feature.TextureContext.RenderColor = this._hairColor;
+            }
+            if (featureType == VisibleFeatureType.NakedBody || featureType == VisibleFeatureType.Arm) {
+                feature.TextureContext.RenderColor = this._skinColor;
             }
 
             this._features[(int)featureType] = feature;

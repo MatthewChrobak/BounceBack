@@ -19,7 +19,11 @@ namespace BounceBack.Models
             int oldCount = this.BannedPeople.Count;
             while (BannedPeople.Count == oldCount) {
                 var person = Person.New();
-                this.BannedPeople.Add(new BanListEntry(person, person.GetRandomFeatures(numberOfFeatures)));
+                var entry = new BanListEntry(person, person.GetRandomFeatures(numberOfFeatures));
+                if (entry.BannedFeatures.Count() == 0) {
+                    continue;
+                }
+                this.BannedPeople.Add(entry);
             }
             this.OnAddToBanList?.Invoke(this.BannedPeople.Last());
         }
@@ -33,6 +37,14 @@ namespace BounceBack.Models
 
         public bool ContainsPerson(Person person) {
             return this.BannedPeople.Any(entry => entry.Equals(person));
+        }
+
+        public Person? GetRandomPerson() {
+            if (BannedPeople.Count == 0) {
+                return null;
+            }
+            int index = RNG.Next(0, BannedPeople.Count);
+            return BannedPeople.ElementAt(index).BannedPerson;
         }
     }
 
