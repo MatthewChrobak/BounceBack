@@ -112,15 +112,6 @@ namespace BounceBack.Models
         {
             Debug.Assert((int)featureType < this._features.Length);
             var feature = visibleFeature;
-
-            if (featureType == VisibleFeatureType.Hair)
-            {
-                feature.TextureContext.RenderColor = this._hairColor;
-            }
-            if (featureType == VisibleFeatureType.NakedBody || featureType == VisibleFeatureType.Arm) {
-                feature.TextureContext.RenderColor = this._skinColor;
-            }
-
             this._features[(int)featureType] = feature;
         }
 
