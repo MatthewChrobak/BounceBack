@@ -17,7 +17,7 @@ namespace BounceBack.Scenes
 
         public WinScene()
         {
-            _winScreen = new TextureContext("")
+            _winScreen = new TextureContext("Lvl4.png")
             {
                 RenderSize = ServiceProvider.Canvas.GetResolution()
             };
