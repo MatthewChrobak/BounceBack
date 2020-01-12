@@ -19,16 +19,25 @@ namespace BounceBack.Scenes
     {
         public readonly CasinoQueue _casinoQueue;
         public readonly BanList BanList;
+        private TopScrollbar topScrollbar;
 
         private const string _timelimitEvent = "set-time-limit";
-        private TopScrollbar topScrollbar;
         private int _timeLimit = 5000;
         private int timeLimitCount = 0;
 
         private TextureContext _bouncer;
+        private const string _bouncerDecide = "IMG_0332.png";
+        private const string _bouncerAccept = "IMG_0342.png";
+        private const string _bouncerReject = "IMG_0343.png";
+
         private TextureContext _timerBar;
         private TextureContext _timerBarBackground;
         private TextContext _timerText;
+
+        private int _playerFailures = 0;
+        private int _playerScore = 0;
+        private TextContext _playerTextScore;
+
 
         private readonly ActionButtonContainer _actionButtonContainer;
 
@@ -54,17 +63,12 @@ namespace BounceBack.Scenes
             this.AddChild(_actionButtonContainer);
             this.AddChild(topScrollbar);
 
-            //StartTimeLimit();
-
-            //this.Events.AddEvent("test", PriorityType.LOGIC, () => {
-            //    GetTimeRatio();
-            //    return ControlEvent.NONE;
-            //}, 500, 0);
-
+            DrawPlayerScore();
             DrawBouncer();
+            DrawTimerBar();
             StartTimeLimit();
 
-            this.Events.AddEvent("timer", PriorityType.ANIMATION, () =>
+            this.Events.AddEvent("update-timer", PriorityType.ANIMATION, () =>
             {
                 if(timeLimitCount >= 1)
                 {
@@ -91,24 +95,23 @@ namespace BounceBack.Scenes
 
         private void AcceptActionButtonClicked()
         {
-            this._casinoQueue.RemovePersonAtFront();
-            this._casinoQueue.AddNewPersonToBack();            
+            UpdatePlayerScore(100);
 
+            this._casinoQueue.RemovePersonAtFront();
+            this._casinoQueue.AddNewPersonToBack();                       
+
+            AnimateBouncer(_bouncerAccept);
             ResetTimeLimit();
         }
 
         private void RejectActionButtonClicked()
         {
+            UpdatePlayerScore(100);
+
             this._casinoQueue.RemovePersonAtFront();
             this._casinoQueue.AddNewPersonToBack();
 
-            _bouncer.SourceTextureName = "IMG_0331.png";
-            this.Events.AddEvent("", PriorityType.ANIMATION, () =>
-            {
-                _bouncer.SourceTextureName = "IMG_0332.png";
-                return ControlEvent.REMOVE;
-            }, 1000, 1000);
-
+            AnimateBouncer(_bouncerReject);
             ResetTimeLimit();
         }
 
@@ -118,6 +121,7 @@ namespace BounceBack.Scenes
             canvas.Draw(this._timerBarBackground);
             canvas.Draw(this._timerBar);
             canvas.Draw(this._timerText);
+            canvas.Draw(this._playerTextScore);
             canvas.Draw(this._bouncer);
             base.Draw(canvas);
         }
@@ -126,9 +130,16 @@ namespace BounceBack.Scenes
         {            
             if(timeLimitCount >= 1)
             {
-                //FailureCount++
-                //Remove person from queue
-                Debug.Log("TimeLimitEvent");
+                _playerFailures++;
+                UpdatePlayerScore(-100);
+
+                if(_playerFailures >= 3)
+                {
+                    //Gameover scene
+                }
+
+                this._casinoQueue.RemovePersonAtFront();
+                this._casinoQueue.AddNewPersonToBack();
             }
             timeLimitCount++;
             return ControlEvent.NONE;
@@ -136,41 +147,12 @@ namespace BounceBack.Scenes
         
         public void StartTimeLimit()
         {
-            this.Events.AddEvent(_timelimitEvent, PriorityType.LOGIC, TimeLimit, interval_ms: _timeLimit);
-            _timerBar = new TextureContext("background.png")
-            {
-                RenderPosition = Vector.Create(ServiceProvider.Canvas.GetResolution().X - 250, 150),
-                RenderSize = new ScalingVector(Vector.Create(150, 25), Vector.Create(GetTimeRatio(), 1)),
-                UseUIView = true
-            };
-            _timerBarBackground = new TextureContext("background.png")
-            {
-                RenderPosition = Vector.Create(ServiceProvider.Canvas.GetResolution().X - 250, 150),
-                RenderSize = Vector.Create(150, 25),
-                RenderColor = RGBA.Black,
-                UseUIView = true
-            };
-            _timerText = new TextContext("5.0", "default.ttf")
-            {
-                RenderPosition = Vector.Create(ServiceProvider.Canvas.GetResolution().X - 250, 100),
-                FontSize = 30,
-                FontColor = RGBA.White,
-                UseUIView = true,
-                Alignment = new TextAlignment()
-                {
-                    HorizontalAlignment = HorizontalAlignment.Center,
-                    VerticalAlignment = VerticalAlignment.Top,
-                    Size = Vector.Create(150,100)
-                }
-            };
+            this.Events.AddEvent(_timelimitEvent, PriorityType.LOGIC, TimeLimit, interval_ms: _timeLimit);            
         }
 
         public void ResetTimeLimit()
         {
-            if (this.Events.RemoveEvent(_timelimitEvent))
-            {
-                Debug.Log("Removed TimeLimitEvent");
-            }
+            this.Events.RemoveEvent(_timelimitEvent);
             timeLimitCount = 0;
             this.Events.AddEvent(_timelimitEvent, PriorityType.LOGIC, TimeLimit, interval_ms: _timeLimit);
         }
@@ -208,13 +190,77 @@ namespace BounceBack.Scenes
         //    ResetTimeLimit();
         //}
 
+        public void DrawPlayerScore()
+        {
+            _playerTextScore = new TextContext(_playerScore.ToString(), "default.ttf")
+            {
+                RenderPosition = Vector.Create(100, 100),
+                FontSize = 50,
+                FontColor = RGBA.White,
+                UseUIView = true,
+                Alignment = new TextAlignment()
+                {
+                    HorizontalAlignment = HorizontalAlignment.Center,
+                    VerticalAlignment = VerticalAlignment.Top,
+                    Size = Vector.Create(150, 100)
+                }
+            };
+        }
+
+        public void UpdatePlayerScore(int score)
+        {            
+            _playerScore = System.Math.Clamp(_playerScore + score, 0, int.MaxValue);
+            _playerTextScore.RenderText = _playerScore.ToString();
+        }
+
+        public void DrawTimerBar()
+        {
+            _timerBar = new TextureContext("background.png")
+            {
+                RenderPosition = Vector.Create(ServiceProvider.Canvas.GetResolution().X - 250, 150),
+                RenderSize = new ScalingVector(Vector.Create(150, 25), Vector.Create(GetTimeRatio(), 1)),
+                UseUIView = true
+            };
+            _timerBarBackground = new TextureContext("background.png")
+            {
+                RenderPosition = Vector.Create(ServiceProvider.Canvas.GetResolution().X - 250, 150),
+                RenderSize = Vector.Create(150, 25),
+                RenderColor = RGBA.Black,
+                UseUIView = true
+            };
+            _timerText = new TextContext("5.0", "default.ttf")
+            {
+                RenderPosition = Vector.Create(ServiceProvider.Canvas.GetResolution().X - 250, 100),
+                FontSize = 30,
+                FontColor = RGBA.White,
+                BorderColor = RGBA.Black,
+                UseUIView = true,
+                Alignment = new TextAlignment()
+                {
+                    HorizontalAlignment = HorizontalAlignment.Center,
+                    VerticalAlignment = VerticalAlignment.Top,
+                    Size = Vector.Create(150, 100)
+                }
+            };
+        }
+
         public void DrawBouncer()
         {
-            _bouncer = new TextureContext("IMG_0332.png")
+            _bouncer = new TextureContext(_bouncerDecide)
             {
-                RenderPosition = Vector.Create(ServiceProvider.Canvas.GetResolution().X-700, ServiceProvider.Canvas.GetResolution().Y - 500),
+                RenderPosition = Vector.Create(ServiceProvider.Canvas.GetResolution().X-725, ServiceProvider.Canvas.GetResolution().Y - 500),
                 RenderSize = Vector.Create(750, 500)
             };
+        }
+
+        public void AnimateBouncer(string id)
+        {
+            _bouncer.SourceTextureName = id;
+            this.Events.AddEvent("", PriorityType.ANIMATION, () =>
+            {
+                _bouncer.SourceTextureName = _bouncerDecide;
+                return ControlEvent.REMOVE;
+            }, 1000, 1000);
         }
     }
 }
