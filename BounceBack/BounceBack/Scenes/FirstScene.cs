@@ -41,7 +41,7 @@ namespace BounceBack.Scenes
 
         private int _personCount = 0;
         private int _maxPersonCount = 10;
-        
+        private int _levelsToWin = 5;        
 
         private readonly ActionButtonContainer _actionButtonContainer;
 
@@ -52,7 +52,7 @@ namespace BounceBack.Scenes
             this.BanList = new BanList();
             this._casinoQueue = new CasinoQueue();          
 
-            this.Events.AddEvent("add-person", PriorityType.LOGIC, AddPerson, 100);
+            this.Events.AddEvent("add-person", PriorityType.LOGIC, AddPerson, 50);
 
 
             this._actionButtonContainer = new ActionButtonContainer()
@@ -71,13 +71,21 @@ namespace BounceBack.Scenes
             _playerFailureImage = new TextureContext[_maxPlayerFailures];
             _playerFailureImageBackground = new TextureContext[_maxPlayerFailures];
 
+            if(ScoreSingleton.Instance.GetDifficultyLevel() >= 2)
+            {
+                _timeLimit -= (1000 * ScoreSingleton.Instance.GetDifficultyLevel());
+            }
+
+            for(int i = 0; i < ScoreSingleton.Instance.GetDifficultyLevel(); i++)
+            {
+                BanList.AddPerson(ScoreSingleton.Instance.GetDifficultyLevel());
+            }
+
             //DrawPlayerScore();
             DrawBouncer();
             DrawTimerBar();
             StartTimeLimit();
-            DrawPlayerFailures();
-
-            BanList.AddPerson(ScoreSingleton.Instance.difficultyLevel);
+            DrawPlayerFailures();            
 
             this.Events.AddEvent("timer", PriorityType.ANIMATION, () =>
             {
@@ -110,7 +118,6 @@ namespace BounceBack.Scenes
             this._casinoQueue.RemovePersonAtFront();
             
             CheckWinCondition();
-
             AnimateBouncer(_bouncerAccept);
             ResetTimeLimit();
         }
@@ -119,15 +126,14 @@ namespace BounceBack.Scenes
         {            
             this._casinoQueue.RemovePersonAtFront();
 
-            CheckWinCondition();                        
-
+            CheckWinCondition();
             AnimateBouncer(_bouncerReject);
             ResetTimeLimit();
         }
 
         private ControlEvent AddPerson()
         {
-            if(_personCount < _maxPersonCount + (ScoreSingleton.Instance.difficultyLevel * 5))
+            if(_personCount < _maxPersonCount + (ScoreSingleton.Instance.GetDifficultyLevel() * 5))
             {
                 this._casinoQueue.AddNewPersonToBack();
                 _personCount++;
@@ -143,7 +149,7 @@ namespace BounceBack.Scenes
             canvas.Draw(this._timerBar);
             canvas.Draw(this._timerText);
             //canvas.Draw(this._playerTextScore);
-            canvas.Draw(this._bouncer);
+            canvas.Draw(this._bouncer);            
 
             for(int i = 0; i < _maxPlayerFailures; i++)
             {
@@ -214,9 +220,17 @@ namespace BounceBack.Scenes
         {
             if (_casinoQueue.PersonInFront == null)
             {
-                ScoreSingleton.Instance.difficultyLevel++;
-                //ServiceProvider.SceneManager.LoadScene<FirstScene>(true);
-                ServiceProvider.SceneManager.LoadScene<LevelTransitionScene>(true);
+                ScoreSingleton.Instance.IncreaseDifficulty();
+                
+                if(ScoreSingleton.Instance.GetDifficultyLevel() >= _levelsToWin)
+                {
+                    ScoreSingleton.Instance.ResetValues();
+                    ServiceProvider.SceneManager.LoadScene<MainMenuScene>();
+                }
+                else
+                {
+                    ServiceProvider.SceneManager.LoadScene<LevelTransitionScene>(true);
+                }
             }
         }
 
@@ -274,7 +288,7 @@ namespace BounceBack.Scenes
 
         public void IncrementPlayerFailures()
         {
-            //_playerFailures++;
+            _playerFailures++;
             if(_playerFailures >= _maxPlayerFailures)
             {
                 ServiceProvider.SceneManager.LoadScene<GameOverScene>(true);
