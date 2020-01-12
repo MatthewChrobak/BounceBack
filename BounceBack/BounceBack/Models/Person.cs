@@ -59,7 +59,8 @@ namespace BounceBack.Models
             numberOfFeatures = Math.Max(1, numberOfFeatures);
             numberOfFeatures = Math.Min(5, numberOfFeatures);
 
-            for (int i = 0; i < numberOfFeatures; i++) {
+            results.Add(VisibleFeatureType.Hair);
+            while (results.Count != numberOfFeatures) {
                 int index = RNG.Next(0, vals.Count);
                 results.Add(vals[index]);
                 vals.RemoveAt(index);
@@ -100,8 +101,6 @@ namespace BounceBack.Models
 
         public Person() {
             this._features = new VisibleFeature[(int)VisibleFeatureType.VISIBLEFEATURETYPE_COUNT];
-            this._skinColor = RGBA.Red;
-            this._hairColor = RGBA.Blue;
         }
 
         public static IEnumerable<VisibleFeatureType> GetFeatureRenderOrder() {
