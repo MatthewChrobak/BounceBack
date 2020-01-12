@@ -34,21 +34,21 @@ namespace BounceBack.Models
             this._peopleInLine = new List<Person>();
             this._renderers = new PersonRenderer[] {
                 new PersonRenderer(Vector.Create(2, 2), Vector.Create(300, 125)),
-                new PersonRenderer(Vector.Create(1.75f, 1.75f), Vector.Create(250, 120)),
-                new PersonRenderer(Vector.Create(1.5f, 1.5f), Vector.Create(200, 115)),
-                new PersonRenderer(Vector.Create(1.25f, 1.25f), Vector.Create(150, 110)),
-                new PersonRenderer(Vector.Create(1.1f, 1.1f), Vector.Create(100, 105)),
+                new PersonRenderer(Vector.Create(1.75f, 1.75f), Vector.Create(250, 150)),
+                new PersonRenderer(Vector.Create(1.5f, 1.5f), Vector.Create(200, 200)),
+                new PersonRenderer(Vector.Create(1.25f, 1.25f), Vector.Create(150, 225)),
+                new PersonRenderer(Vector.Create(1.1f, 1.1f), Vector.Create(100, 250)),
 
-                new PersonRenderer(Vector.Create(0.9f, 0.9f), Vector.Create(50, 110)),
-                new PersonRenderer(Vector.Create(0.75f, 0.75f), Vector.Create(75, 120)),
-                new PersonRenderer(Vector.Create(0.55f, 0.55f), Vector.Create(100, 130)),
-                new PersonRenderer(Vector.Create(0.3f, 0.3f), Vector.Create(125, 140)),
+                new PersonRenderer(Vector.Create(0.9f, 0.9f), Vector.Create(75, 270)),
+                new PersonRenderer(Vector.Create(0.8f, 0.8f), Vector.Create(40, 280)),
+                new PersonRenderer(Vector.Create(0.8f, 0.8f), Vector.Create(10, 280)),
+                new PersonRenderer(Vector.Create(0.8f, 0.8f), Vector.Create(-20, 280)),
             };
-            this._background = new TextureContext("background.png") {
+            this._background = new TextureContext("backgroundgame.png") {
                 RenderPosition = Vector.Create(),
                 RenderSize = ServiceProvider.Canvas.GetResolution()
             };
-            this._fog = new SolidRectangleContext(new Annex.Data.RGBA(0, 0, 0, 30)) {
+            this._fog = new SolidRectangleContext(new Annex.Data.RGBA(0, 0, 0, 15)) {
                 RenderPosition = Vector.Create(),
                 RenderSize = ServiceProvider.Canvas.GetResolution()
             };
