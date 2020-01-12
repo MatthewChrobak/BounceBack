@@ -22,6 +22,7 @@ namespace BounceBack.Scenes
         private int _timeLimit = 10000;
         private int timeLimitCount = 0;
 
+        private const string _bouncerAnimationEvent = "animate-bouncer";
         private TextureContext _bouncer;
         private const string _bouncerDecide = "IMG_0332.png";
         private const string _bouncerAccept = "IMG_0342.png";
@@ -71,10 +72,12 @@ namespace BounceBack.Scenes
             _playerFailureImage = new TextureContext[_maxPlayerFailures];
             _playerFailureImageBackground = new TextureContext[_maxPlayerFailures];
 
+            /*
             if(ScoreSingleton.Instance.GetDifficultyLevel() >= 2)
             {
                 _timeLimit -= (1000 * ScoreSingleton.Instance.GetDifficultyLevel());
             }
+            */
 
             for(int i = 0; i < ScoreSingleton.Instance.GetDifficultyLevel(); i++)
             {
@@ -225,7 +228,7 @@ namespace BounceBack.Scenes
                 if(ScoreSingleton.Instance.GetDifficultyLevel() >= _levelsToWin)
                 {
                     ScoreSingleton.Instance.ResetValues();
-                    ServiceProvider.SceneManager.LoadScene<MainMenuScene>();
+                    ServiceProvider.SceneManager.LoadScene<WinScene>();
                 }
                 else
                 {
@@ -288,7 +291,7 @@ namespace BounceBack.Scenes
 
         public void IncrementPlayerFailures()
         {
-            _playerFailures++;
+            //_playerFailures++;
             if(_playerFailures >= _maxPlayerFailures)
             {
                 ServiceProvider.SceneManager.LoadScene<GameOverScene>(true);
@@ -338,7 +341,9 @@ namespace BounceBack.Scenes
         public void AnimateBouncer(string id)
         {
             _bouncer.SourceTextureName = id;
-            this.Events.AddEvent("", PriorityType.ANIMATION, () =>
+
+            this.Events.RemoveEvent(_bouncerAnimationEvent);
+            this.Events.AddEvent(_bouncerAnimationEvent, PriorityType.ANIMATION, () =>
             {
                 _bouncer.SourceTextureName = _bouncerDecide;
                 return ControlEvent.REMOVE;

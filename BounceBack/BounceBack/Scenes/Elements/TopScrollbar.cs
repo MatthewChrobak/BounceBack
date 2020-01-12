@@ -16,7 +16,7 @@ namespace BounceBack.Scenes.Elements
         private readonly TextureContext _rightArrow;
         private Vector _offset;
         private const int width = 175;
-        private const int height = 175;
+        private const int height = 110;
 
         private List<TextContext> _bannedPeopleDescriptions;
         private List<SolidRectangleContext> _descriptionBackgrounds;
