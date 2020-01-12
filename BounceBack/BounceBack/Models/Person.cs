@@ -129,6 +129,11 @@ namespace BounceBack.Models
                 if (f1 != f2) {
                     return false;
                 }
+                if (feature == VisibleFeatureType.Hair) {
+                    if (p.HairColorName != this.HairColorName) {
+                        return false;
+                    }
+                }
             }
             return true;
         }
