@@ -32,20 +32,40 @@ namespace BounceBack.Containers
                 if (scene == null) {
                     return;
                 }
-
+                int chance = 6;
                 if (button == _acceptButton) {
-                    if (scene.BanList.ContainsPerson(scene._casinoQueue.PersonInFront)) {                                                
+                    if (scene.BanList.ContainsPerson(scene._casinoQueue.PersonInFront)) {
                         scene.IncrementPlayerFailures();
+
+                        if (RNG.Next(0, 10) < chance) {
+                            string audio = "sfx/boss" + RNG.Next(0, 3) + ".wav";
+                            ServiceProvider.AudioManager.PlayAudio(audio);
+                        }
+                    } else {
+                        if (RNG.Next(0, 10) < chance) {
+                            string audio = "sfx/happy" + RNG.Next(1, 7) + ".wav";
+                            ServiceProvider.AudioManager.PlayAudio(audio, volume: 10);
+                        }
                     }
-                    
+
                     AcceptButtonEvent?.Invoke();
                 }
 
                 if (button == _rejectButton) {
                     if (!scene.BanList.ContainsPerson(scene._casinoQueue.PersonInFront)) {
                         scene.IncrementPlayerFailures();
+
+                        if (RNG.Next(0, 10) < chance) {
+                            string audio = "sfx/boss" + RNG.Next(0, 3) + ".wav";
+                            ServiceProvider.AudioManager.PlayAudio(audio);
+                        }
+                    } else {
+                        if (RNG.Next(0, 10) < chance) {
+                            string audio = "sfx/sad" + RNG.Next(1, 6) + ".wav";
+                            ServiceProvider.AudioManager.PlayAudio(audio, volume: 10);
+                        }
                     }
-                    
+
                     RejectButtonEvent?.Invoke();
                 }
             }

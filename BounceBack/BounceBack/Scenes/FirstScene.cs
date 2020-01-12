@@ -49,6 +49,8 @@ namespace BounceBack.Scenes
 
         public FirstScene()
         {
+            ServiceProvider.AudioManager.StopAllAudio();
+            ServiceProvider.AudioManager.PlayAudio("sfx/ambient.wav", loop: true, volume: 10);
             this.BanList = new BanList();
             this._casinoQueue = new CasinoQueue();          
 
