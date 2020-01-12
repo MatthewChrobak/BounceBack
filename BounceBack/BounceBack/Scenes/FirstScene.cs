@@ -68,7 +68,10 @@ namespace BounceBack.Scenes
             DrawTimerBar();
             StartTimeLimit();
 
-            this.Events.AddEvent("update-timer", PriorityType.ANIMATION, () =>
+
+            BanList.AddPerson(1);
+
+            this.Events.AddEvent("timer", PriorityType.ANIMATION, () =>
             {
                 if(timeLimitCount >= 1)
                 {
