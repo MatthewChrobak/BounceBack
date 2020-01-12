@@ -27,7 +27,7 @@ namespace BounceBack.Containers
 
         private void ButtonClicked(Button button, MouseButtonEvent e)
         {
-            if (e is MouseButtonPressedEvent && e.Button == MouseButton.Left)
+            if (e is MouseButtonReleasedEvent && e.Button == MouseButton.Left)
             {
                 if (button == _acceptButton)
                 {
