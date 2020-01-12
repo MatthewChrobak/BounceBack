@@ -13,6 +13,8 @@ namespace BounceBack.Scenes
     {
         private readonly TextureContext _backgroundTextureContext;
         private readonly StartButton _startButton;
+        private readonly ExitButton _exitButton;
+        private readonly CreditsButton _creditsButton;
         private const string _musicId = "main menu background music";
 
         public MainMenuScene()
@@ -21,7 +23,17 @@ namespace BounceBack.Scenes
             this._startButton = new StartButton();
             this._startButton.OnClickHandler += this.ChangeSceneToGameScene;
 
+            this._exitButton = new ExitButton();
+            this._exitButton.OnClickHandler += CloseGame;
+            this._exitButton.Position.Set(780, -35);
+
+            this._creditsButton = new CreditsButton();
+            this._creditsButton.OnClickHandler += GotoCreditsScene;
+            this._creditsButton.Position.Set(455, -115);
+
             this.AddChild(this._startButton);
+            this.AddChild(this._exitButton);
+            this.AddChild(this._creditsButton);
 
             this._backgroundTextureContext.RenderSize = ServiceProvider.Canvas.GetResolution();
             this._startButton.Size.Set(ServiceProvider.Canvas.GetResolution());
@@ -44,6 +56,16 @@ namespace BounceBack.Scenes
                 ServiceProvider.AudioManager.StopAllAudio(_musicId);
                 ServiceProvider.SceneManager.LoadScene<InstructionScene>();
             }
+        }
+
+        private void CloseGame(Button button, MouseButtonEvent e)
+        {
+            ServiceProvider.SceneManager.LoadScene<GameClosing>();
+        }
+
+        private void GotoCreditsScene(Button button, MouseButtonEvent e)
+        {
+            ServiceProvider.SceneManager.LoadScene<CreditsScene>();
         }
     }
 }
