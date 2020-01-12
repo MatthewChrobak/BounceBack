@@ -14,7 +14,7 @@
         Torso,
         Bottom,
         Feet,
-        Arm,
+        Arms,
         Clothes,
         EyeSockets,
         Shoes,

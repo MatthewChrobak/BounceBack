@@ -18,7 +18,7 @@ namespace BounceBack.Models
 
         static Person() {
             _featureOrder = new VisibleFeatureType[] {
-                VisibleFeatureType.Arm,
+                VisibleFeatureType.Arms,
                 VisibleFeatureType.NakedBody,
                 VisibleFeatureType.Bottom,
                 VisibleFeatureType.HeadShapes,
@@ -29,7 +29,7 @@ namespace BounceBack.Models
                 VisibleFeatureType.EyeSockets,
                 VisibleFeatureType.Hair,
                 VisibleFeatureType.Shoes,
-                VisibleFeatureType.Arm,
+                VisibleFeatureType.Arms,
                 VisibleFeatureType.Accessories,
             };
         }
@@ -44,7 +44,7 @@ namespace BounceBack.Models
                 if (feature == VisibleFeatureType.NakedBody) {
                     continue;
                 }
-                if (feature == VisibleFeatureType.Arm) {
+                if (feature == VisibleFeatureType.Arms) {
                     continue;
                 }
                 if (feature == VisibleFeatureType.Ears) {
@@ -75,7 +75,7 @@ namespace BounceBack.Models
                 .WithFeature(VisibleFeatureType.Bottom)
                 .WithFeature(VisibleFeatureType.NakedBody)
                 .WithFeature(VisibleFeatureType.EyeSockets)
-                .WithFeature(VisibleFeatureType.Arm)
+                .WithFeature(VisibleFeatureType.Arms)
                 .WithFeature(VisibleFeatureType.HeadShapes)
                 .WithFeature(VisibleFeatureType.Mouths)
                 .WithFeature(VisibleFeatureType.Noses)

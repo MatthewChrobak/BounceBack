@@ -74,7 +74,7 @@ namespace BounceBack.Models
                         if (feature == VisibleFeatureType.Hair) {
                             ctx.RenderColor = person._hairColor;
                         }
-                        if (feature == VisibleFeatureType.Arm ||
+                        if (feature == VisibleFeatureType.Arms ||
                             feature == VisibleFeatureType.Ears ||
                             feature == VisibleFeatureType.Eyebrows ||
                             feature == VisibleFeatureType.EyeSockets ||
