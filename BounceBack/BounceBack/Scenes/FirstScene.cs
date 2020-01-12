@@ -34,8 +34,13 @@ namespace BounceBack.Scenes
         private TextureContext _timerBarBackground;
         private TextContext _timerText;
 
+        private const int _maxPlayerFailures = 3;
         private int _playerFailures = 0;
         private int _playerScore = 0;
+
+        private TextureContext[] _playerFailureImage;
+        private TextureContext[] _playerFailureImageBackground;
+
         private TextContext _playerTextScore;
 
 
@@ -72,10 +77,14 @@ namespace BounceBack.Scenes
             this.AddChild(_actionButtonContainer);
             this.AddChild(topScrollbar);
 
+            _playerFailureImage = new TextureContext[_maxPlayerFailures];
+            _playerFailureImageBackground = new TextureContext[_maxPlayerFailures];
+
             DrawPlayerScore();
             DrawBouncer();
             DrawTimerBar();
             StartTimeLimit();
+            DrawPlayerFailures();
 
 
             BanList.AddPerson(1);
@@ -107,19 +116,16 @@ namespace BounceBack.Scenes
 
         private void AcceptActionButtonClicked()
         {
-            UpdatePlayerScore(100);
-
+            
             this._casinoQueue.RemovePersonAtFront();
-            this._casinoQueue.AddNewPersonToBack();                       
+            this._casinoQueue.AddNewPersonToBack();
 
             AnimateBouncer(_bouncerAccept);
             ResetTimeLimit();
         }
 
         private void RejectActionButtonClicked()
-        {
-            UpdatePlayerScore(100);
-
+        {            
             this._casinoQueue.RemovePersonAtFront();
             this._casinoQueue.AddNewPersonToBack();
 
@@ -135,20 +141,28 @@ namespace BounceBack.Scenes
             canvas.Draw(this._timerText);
             canvas.Draw(this._playerTextScore);
             canvas.Draw(this._bouncer);
+
+            for(int i = 0; i < _maxPlayerFailures; i++)
+            {
+                canvas.Draw(this._playerFailureImageBackground[i]);
+            }
+
+            for(int i = 0; i < _playerFailures; i++)
+            {
+                if (_playerFailures >= _maxPlayerFailures) return;
+                canvas.Draw(this._playerFailureImage[i]);
+
+            }
+
             base.Draw(canvas);
         }
 
         private ControlEvent TimeLimit()
-        {            
+        {
             if(timeLimitCount >= 1)
             {
-                _playerFailures++;
+                IncrementPlayerFailures();
                 UpdatePlayerScore(-100);
-
-                if(_playerFailures >= 3)
-                {
-                    //Gameover scene
-                }
 
                 this._casinoQueue.RemovePersonAtFront();
                 this._casinoQueue.AddNewPersonToBack();
@@ -204,15 +218,15 @@ namespace BounceBack.Scenes
 
         public void DrawPlayerScore()
         {
-            _playerTextScore = new TextContext(_playerScore.ToString(), "default.ttf")
+            _playerTextScore = new TextContext("Score: " + _playerScore.ToString(), "default.ttf")
             {
-                RenderPosition = Vector.Create(100, 100),
+                RenderPosition = Vector.Create(25, 200),
                 FontSize = 50,
                 FontColor = RGBA.White,
                 UseUIView = true,
                 Alignment = new TextAlignment()
                 {
-                    HorizontalAlignment = HorizontalAlignment.Center,
+                    HorizontalAlignment = HorizontalAlignment.Left,
                     VerticalAlignment = VerticalAlignment.Top,
                     Size = Vector.Create(150, 100)
                 }
@@ -222,7 +236,36 @@ namespace BounceBack.Scenes
         public void UpdatePlayerScore(int score)
         {            
             _playerScore = System.Math.Clamp(_playerScore + score, 0, int.MaxValue);
-            _playerTextScore.RenderText = _playerScore.ToString();
+            _playerTextScore.RenderText = "Score: " + _playerScore.ToString();
+        }
+
+        public void DrawPlayerFailures()
+        {            
+            for(int i = 0; i < _maxPlayerFailures; i++)
+            {
+                _playerFailureImageBackground[i] = new TextureContext("IMG_0348.png")
+                {
+                    RenderPosition = Vector.Create(75 * i, 100),
+                    RenderSize = Vector.Create(100, 100),
+                    UseUIView = true
+                };
+
+                _playerFailureImage[i] = new TextureContext("IMG_0349.png")
+                {
+                    RenderPosition = Vector.Create(75 * i, 100),
+                    RenderSize = Vector.Create(100, 100),
+                    UseUIView = true
+                };
+            }
+        }
+
+        public void IncrementPlayerFailures()
+        {
+            _playerFailures++;
+            if(_playerFailures >= _maxPlayerFailures)
+            {
+                //Gameover scene
+            }
         }
 
         public void DrawTimerBar()

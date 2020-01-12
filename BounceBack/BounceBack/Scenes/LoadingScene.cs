@@ -1,12 +1,12 @@
-﻿using System.Globalization;
-using System.Linq;
+﻿using System;
 using Annex;
 using Annex.Data;
+using Annex.Data.Shared;
 using Annex.Graphics;
 using Annex.Graphics.Contexts;
 using Annex.Resources;
+using System.Linq;
 using System.Threading;
-using Annex.Data.Shared;
 
 namespace BounceBack.Scenes
 {
@@ -16,6 +16,7 @@ namespace BounceBack.Scenes
         private readonly SolidRectangleContext _loadingBackgroundTextureContext;
         private readonly SolidRectangleContext _loadingBorderTextureContext;
         private readonly TextureContext _backgroundTextureContext;
+        private readonly TextureContext _blurBackgroundTextureContext;
 
         private float LoadPercentage => (float)_loadAmount / _totalLoadAmount;
         private int _loadAmount;
@@ -57,6 +58,12 @@ namespace BounceBack.Scenes
                 RenderSize = screenResolution
             };
 
+            this._blurBackgroundTextureContext = new TextureContext("Blur.png")
+            {
+                RenderSize = screenResolution,
+                RenderColor = RGBA.White
+            };
+
             Load();
         }
 
@@ -83,7 +90,8 @@ namespace BounceBack.Scenes
 
                 foreach (var texture in allTextures)
                 {
-                    if (texture == _backgroundTextureContext.SourceTextureName.Value?.ToLowerInvariant())
+                    if (texture == _backgroundTextureContext.SourceTextureName.Value?.ToLowerInvariant() ||
+                        texture == _blurBackgroundTextureContext.SourceTextureName.Value?.ToLowerInvariant())
                     {
                         continue;
                     }
@@ -96,11 +104,18 @@ namespace BounceBack.Scenes
         private void UpdateLoadingBar()
         {
             this._loadingTextureContext.RenderSize.Set(this.LoadPercentage * 500, 30);
+            
+            var renderColor = this._blurBackgroundTextureContext.RenderColor;
+            if (renderColor != null)
+            {
+                renderColor.A = (byte) (255f - (255f * this.LoadPercentage * 0.6));
+            }
         }
 
         public override void Draw(ICanvas canvas)
         {
             canvas.Draw(this._backgroundTextureContext);
+            canvas.Draw(this._blurBackgroundTextureContext);
             base.Draw(canvas);
             canvas.Draw(this._loadingBorderTextureContext);
             canvas.Draw(this._loadingBackgroundTextureContext);

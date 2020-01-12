@@ -34,15 +34,23 @@ namespace BounceBack.Containers
                 }
 
                 if (button == _acceptButton) {
-                    if (scene.BanList.ContainsPerson(scene._casinoQueue.PersonInFront)) {
-                        throw new Exception("Decrease points.");
+                    if (scene.BanList.ContainsPerson(scene._casinoQueue.PersonInFront)) {                        
+                        scene.UpdatePlayerScore(-100);
+                        scene.IncrementPlayerFailures();
+                    }
+                    else{
+                        scene.UpdatePlayerScore(100);
                     }
                     AcceptButtonEvent?.Invoke();
                 }
 
                 if (button == _rejectButton) {
                     if (!scene.BanList.ContainsPerson(scene._casinoQueue.PersonInFront)) {
-                        throw new Exception("Decrease points.");
+                        scene.UpdatePlayerScore(-100);
+                        scene.IncrementPlayerFailures();
+                    }
+                    else{
+                        scene.UpdatePlayerScore(100);
                     }
                     RejectButtonEvent?.Invoke();
                 }
