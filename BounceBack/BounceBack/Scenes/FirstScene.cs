@@ -40,9 +40,12 @@ namespace BounceBack.Scenes
 
         private TextureContext[] _playerFailureImage;
         private TextureContext[] _playerFailureImageBackground;
-
         private TextContext _playerTextScore;
 
+        private int _personCount = 0;
+        private int _maxPersonCount = 10;
+
+        private int _difficultyLevel = 1;
 
         private readonly ActionButtonContainer _actionButtonContainer;
 
@@ -51,18 +54,10 @@ namespace BounceBack.Scenes
         public FirstScene()
         {
             this.BanList = new BanList();
-            this._casinoQueue = new CasinoQueue();
-            this._casinoQueue.AddNewPersonToBack();
-            this._casinoQueue.AddNewPersonToBack();
-            this._casinoQueue.AddNewPersonToBack();
-            this._casinoQueue.AddNewPersonToBack();
-            this._casinoQueue.AddNewPersonToBack();
-            this._casinoQueue.AddNewPersonToBack();
-            this._casinoQueue.AddNewPersonToBack();
-            this._casinoQueue.AddNewPersonToBack();
-            this._casinoQueue.AddNewPersonToBack();
-            this._casinoQueue.AddNewPersonToBack();
-            this._casinoQueue.AddNewPersonToBack();
+            this._casinoQueue = new CasinoQueue();          
+
+            this.Events.AddEvent("add-person", PriorityType.LOGIC, AddPerson, 100);
+
 
             this._actionButtonContainer = new ActionButtonContainer()
             {
@@ -87,7 +82,7 @@ namespace BounceBack.Scenes
             DrawPlayerFailures();
 
 
-            BanList.AddPerson(1);
+            BanList.AddPerson(ScoreSingleton.Instance.difficultyLevel);
 
             this.Events.AddEvent("timer", PriorityType.ANIMATION, () =>
             {
@@ -118,7 +113,8 @@ namespace BounceBack.Scenes
         {
             
             this._casinoQueue.RemovePersonAtFront();
-            this._casinoQueue.AddNewPersonToBack();
+            
+            CheckWinCondition();
 
             AnimateBouncer(_bouncerAccept);
             ResetTimeLimit();
@@ -127,10 +123,22 @@ namespace BounceBack.Scenes
         private void RejectActionButtonClicked()
         {            
             this._casinoQueue.RemovePersonAtFront();
-            this._casinoQueue.AddNewPersonToBack();
+
+            CheckWinCondition();                        
 
             AnimateBouncer(_bouncerReject);
             ResetTimeLimit();
+        }
+
+        private ControlEvent AddPerson()
+        {
+            if(_personCount < _maxPersonCount + (ScoreSingleton.Instance.difficultyLevel * 5))
+            {
+                this._casinoQueue.AddNewPersonToBack();
+                _personCount++;
+            }
+
+            return ControlEvent.NONE;
         }
 
         public override void Draw(ICanvas canvas)
@@ -205,6 +213,15 @@ namespace BounceBack.Scenes
             if (e.Key == KeyboardKey.Tilde)
             {
                 Debug.ToggleDebugOverlay();
+            }
+        }
+
+        public void CheckWinCondition()
+        {
+            if (_casinoQueue.PersonInFront == null)
+            {
+                ScoreSingleton.Instance.difficultyLevel++;
+                ServiceProvider.SceneManager.LoadScene<FirstScene>(true);
             }
         }
 
