@@ -277,7 +277,7 @@ namespace BounceBack.Scenes
             _playerFailures++;
             if(_playerFailures >= _maxPlayerFailures)
             {
-                ServiceProvider.SceneManager.LoadScene<GameOverScene>();
+                ServiceProvider.SceneManager.LoadScene<GameOverScene>(true);
             }
         }
 

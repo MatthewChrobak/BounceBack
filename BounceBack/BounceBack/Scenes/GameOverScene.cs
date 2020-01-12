@@ -129,7 +129,7 @@ namespace BounceBack.Scenes
                 }
                 else if (IsHoverOverBouncer())
                 {
-                    ServiceProvider.SceneManager.LoadScene<FirstScene>();
+                    ServiceProvider.SceneManager.LoadScene<FirstScene>(true);
                 }
             }
         }
