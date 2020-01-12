@@ -1,4 +1,5 @@
 using Annex;
+using Annex.Data;
 using Annex.Data.Shared;
 using Annex.Events;
 using Annex.Graphics;
@@ -8,10 +9,6 @@ using Annex.Scenes;
 using BounceBack.Containers;
 using BounceBack.Models;
 using BounceBack.Scenes.Elements;
-using BounceBack.Containers;
-using Annex.Graphics.Contexts;
-using Annex.Data.Shared;
-using Annex.Data;
 
 namespace BounceBack.Scenes
 {
@@ -87,7 +84,11 @@ namespace BounceBack.Scenes
             DrawPlayerFailures();
 
 
-            BanList.AddPerson(1);
+            BanList.AddPerson(5);
+            BanList.AddPerson(5);
+            BanList.AddPerson(5);
+            BanList.AddPerson(5);
+            BanList.AddPerson(5);
 
             this.Events.AddEvent("timer", PriorityType.ANIMATION, () =>
             {

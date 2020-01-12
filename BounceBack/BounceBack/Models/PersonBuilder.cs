@@ -1,4 +1,4 @@
-﻿using System;
+﻿using Annex.Data;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -13,22 +13,54 @@ namespace BounceBack.Models
         public PersonBuilder() {
             this._person = new Person();
             this._isMale = RNG.Next(0, 100) < 50;
-
-            switch (RNG.Next(0, 5)) {
+            byte alpha = 255;
+            switch (RNG.Next(0, 8)) {
                 case 0:
+                    this._person.HairColorName = "red";
+                    this._person._hairColor = new RGBA(255, 0, 0, alpha);
+                    break;
                 case 1:
+                    this._person.HairColorName = "blue";
+                    this._person._hairColor = new RGBA(0, 0, 255, alpha);
+                    break;
                 case 2:
+                    this._person.HairColorName = "black";
+                    this._person._hairColor = new RGBA(0, 0, 0, alpha);
+                    break;
                 case 3:
+                    this._person.HairColorName = "white";
+                    this._person._hairColor = new RGBA(255, 255, 255, alpha);
+                    break;
                 case 4:
+                    this._person.HairColorName = "brown";
+                    this._person._hairColor = new RGBA(150, 75, 0, alpha);
+                    break;
+                case 5:
+                    this._person.HairColorName = "green";
+                    this._person._hairColor = new RGBA(0, 255, 0, alpha);
+                    break;
+                case 6:
+                    this._person.HairColorName = "purple";
+                    this._person._hairColor = new RGBA(255, 0, 255, alpha);
+                    break;
                 default:
+                    this._person.HairColorName = "blonde";
+                    this._person._hairColor = new RGBA(255, 255, 0, alpha);
                     break;
             }
 
-            switch (RNG.Next(0, 2)) {
+            switch (RNG.Next(0, 4)) {
                 case 0:
-                    
+                    this._person._skinColor = new RGBA(141, 85, 36, alpha);
+                    break;
                 case 1:
-                case 2:
+                    this._person._skinColor = new RGBA(224, 172, 105, alpha);
+                    break;
+                case 3:
+                    this._person._skinColor = new RGBA(247, 225, 211, alpha);
+                    break;
+                default:
+                    this._person._skinColor = new RGBA(255, 219, 172, alpha);
                     break;
             }
         }

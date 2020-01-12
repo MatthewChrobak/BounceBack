@@ -71,6 +71,21 @@ namespace BounceBack.Models
                             continue;
                         }
 
+                        if (feature == VisibleFeatureType.Hair) {
+                            ctx.RenderColor = person._hairColor;
+                        }
+                        if (feature == VisibleFeatureType.Arm ||
+                            feature == VisibleFeatureType.Ears ||
+                            feature == VisibleFeatureType.Eyebrows ||
+                            feature == VisibleFeatureType.EyeSockets ||
+                            feature == VisibleFeatureType.HeadShapes ||
+                            feature == VisibleFeatureType.Mouths ||
+                            feature == VisibleFeatureType.NakedBody ||
+                            feature == VisibleFeatureType.Noses
+                        ) {
+                            ctx.RenderColor = person._skinColor;
+                                    }
+
                         ctx.RenderPosition.Set(renderer.PositionOffset);
                         ctx.RenderSize.Set(renderer.RenderSizeScale);
                         canvas.Draw(ctx);
