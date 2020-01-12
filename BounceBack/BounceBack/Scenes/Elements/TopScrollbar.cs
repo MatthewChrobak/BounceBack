@@ -12,25 +12,30 @@ namespace BounceBack.Scenes.Elements
 {
     public class TopScrollbar : UIElement
     {
-        private TextureContext _leftArrow;
-        private TextureContext _rightArrow;
+        private readonly SolidRectangleContext _background;
+        private readonly TextureContext _leftArrow;
+        private readonly TextureContext _rightArrow;
         private Vector _offset;
         private const int width = 200;
+        private const int height = 100;
 
         private List<TextContext> _bannedPeopleDescriptions;
 
         public TopScrollbar() : base("") {
             this._offset = Vector.Create(100, 0);
-            this.Size.Set(ServiceProvider.Canvas.GetResolution().X, 100);
+            this._background = new SolidRectangleContext(new RGBA(25, 25, 50, 25)) {
+                RenderSize = Vector.Create(ServiceProvider.Canvas.GetResolution().X, height)
+            };
+            this.Size.Set(ServiceProvider.Canvas.GetResolution().X, height);
             this._leftArrow = new TextureContext("icon-1.png") {
                 RenderPosition = Vector.Create(0, 0),
-                RenderSize = Vector.Create(100, 100),
+                RenderSize = Vector.Create(100, height),
                 UseUIView = true
             };
 
             this._rightArrow = new TextureContext("icon-1.png") {
                 RenderPosition = Vector.Create(ServiceProvider.Canvas.GetResolution().X - 100, 0),
-                RenderSize = Vector.Create(100, 100),
+                RenderSize = Vector.Create(100, height),
                 UseUIView = true
             };
 
@@ -51,6 +56,7 @@ namespace BounceBack.Scenes.Elements
         }
 
         public override void Draw(ICanvas canvas) {
+            canvas.Draw(this._background);
             foreach (var person in this._bannedPeopleDescriptions) {
                 canvas.Draw(person);
             }

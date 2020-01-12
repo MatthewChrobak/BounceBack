@@ -1,5 +1,6 @@
 ﻿using Annex;
 using Annex.Data;
+using System;
 using System.Collections.Generic;
 
 namespace BounceBack.Models
@@ -26,6 +27,28 @@ namespace BounceBack.Models
                 VisibleFeatureType.Shoes,
                 VisibleFeatureType.Accessories,
             };
+        }
+
+        public IEnumerable<VisibleFeatureType> GetRandomFeatures(int numberOfFeatures) {
+            var vals = new List<VisibleFeatureType>();
+            var results = new List<VisibleFeatureType>();
+            foreach (var feature in (VisibleFeatureType[])(Enum.GetValues(typeof(VisibleFeatureType)))) {
+                if (feature == VisibleFeatureType.VISIBLEFEATURETYPE_COUNT) {
+                    continue;
+                }
+                vals.Add(feature);
+            }
+
+            numberOfFeatures = Math.Max(1, numberOfFeatures);
+            numberOfFeatures = Math.Min(5, numberOfFeatures);
+
+            for (int i = 0; i < numberOfFeatures; i++) {
+                int index = RNG.Next(0, vals.Count);
+                results.Add(vals[index]);
+                vals.RemoveAt(index);
+            }
+
+            return results;
         }
 
         public static Person New() {
@@ -69,6 +92,20 @@ namespace BounceBack.Models
         public VisibleFeature? GetFeature(VisibleFeatureType feature) {
             Debug.Assert((int)feature < this._features.Length);
             return this._features[(int)feature];
+        }
+
+        public bool Equals(Person p, IEnumerable<VisibleFeatureType> features) {
+            foreach (var feature in features) {
+                var f1 = p.GetFeature(feature)?.TextureContext.SourceTextureName;
+                var f2 = this.GetFeature(feature)?.TextureContext.SourceTextureName;
+                if (f1 == null || f1 == null) {
+                    continue;
+                }
+                if (f1 != f2) {
+                    return false;
+                }
+            }
+            return true;
         }
 
         public override bool Equals(object? obj) {

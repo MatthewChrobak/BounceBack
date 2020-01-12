@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Annex.Events;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -8,15 +9,30 @@ namespace BounceBack.Models
     {
         private HashSet<BanListEntry> BannedPeople;
 
-        public event Action<BanListEntry> OnAddToBanList;
+        public event Action<BanListEntry>? OnAddToBanList;
 
         public BanList() {
             this.BannedPeople = new HashSet<BanListEntry>();
         }
 
-        public void AddPerson(Person person, IEnumerable<VisibleFeatureType> features) {
-            this.BannedPeople.Add(new BanListEntry(person, features));
+        public void AddPerson(int numberOfFeatures) {
+            int oldCount = this.BannedPeople.Count;
+            while (BannedPeople.Count == oldCount) {
+                var person = Person.New();
+                this.BannedPeople.Add(new BanListEntry(person, person.GetRandomFeatures(numberOfFeatures)));
+            }
             this.OnAddToBanList?.Invoke(this.BannedPeople.Last());
+        }
+
+        public GameEvent GenerateEvents() {
+            return new GameEvent("", () => {
+                AddPerson(5);
+                return ControlEvent.NONE;
+            }, 5000, 5000);
+        }
+
+        public bool ContainsPerson(Person person) {
+            return this.BannedPeople.Any(entry => entry.Equals(person));
         }
     }
 
@@ -24,10 +40,12 @@ namespace BounceBack.Models
     {
         public readonly Person BannedPerson;
         public List<string> DisplayString;
+        public IEnumerable<VisibleFeatureType> BannedFeatures;
 
         public BanListEntry(Person person, IEnumerable<VisibleFeatureType> bannedFeatures) {
             this.BannedPerson = person;
             this.DisplayString = new List<string>();
+            this.BannedFeatures = bannedFeatures;
 
             foreach (var featureType in bannedFeatures) {
                 var feature = BannedPerson.GetFeature(featureType);
@@ -42,10 +60,10 @@ namespace BounceBack.Models
 
         public override bool Equals(object? obj) {
             if (obj is Person p) {
-                return p.Equals(this.BannedPerson);
+                return p.Equals(this.BannedPerson, this.BannedFeatures);
             }
             if (obj is BanListEntry b) {
-                return b.BannedPerson.Equals(this.BannedPerson);
+                return b.BannedPerson.Equals(this.BannedPerson, this.BannedFeatures);
             }
             return false;
         }
