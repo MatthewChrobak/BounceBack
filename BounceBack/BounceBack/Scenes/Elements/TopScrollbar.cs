@@ -15,8 +15,8 @@ namespace BounceBack.Scenes.Elements
         private readonly TextureContext _leftArrow;
         private readonly TextureContext _rightArrow;
         private Vector _offset;
-        private const int width = 200;
-        private const int height = 100;
+        private const int width = 175;
+        private const int height = 175;
 
         private List<TextContext> _bannedPeopleDescriptions;
         private List<SolidRectangleContext> _descriptionBackgrounds;
@@ -49,10 +49,10 @@ namespace BounceBack.Scenes.Elements
                 RenderBorderColor = new RGBA(255, 237, 77)
             });
             this._bannedPeopleDescriptions.Add(new TextContext(string.Join("\r\n", bannedPerson.DisplayString), "default.ttf") {
-                RenderPosition = new OffsetVector(Vector.Create(this._bannedPeopleDescriptions.Count * width + 15, 10), this._offset),
+                RenderPosition = new OffsetVector(Vector.Create(this._bannedPeopleDescriptions.Count * width + 10, 10), this._offset),
                 Alignment = new TextAlignment() {
                     HorizontalAlignment = HorizontalAlignment.Left,
-                    Size = Vector.Create(width - 30, height - 20),
+                    Size = Vector.Create(width - 20, height - 20),
                     VerticalAlignment = VerticalAlignment.Top
                 },
                 FontColor = RGBA.Black,

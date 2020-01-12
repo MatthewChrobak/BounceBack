@@ -66,7 +66,8 @@ namespace BounceBack.Models
                 }
                 string texture = feature.TextureContext.SourceTextureName.Value;
                 texture = texture.Remove(0, texture.IndexOf('/') + 1);
-                this.DisplayString.Add($"{featureType}: {texture.Substring(0, texture.IndexOf('.'))}");
+                string color = featureType == VisibleFeatureType.Hair ? BannedPerson.HairColorName : string.Empty;
+                this.DisplayString.Add($"{featureType}: {color} {texture.Substring(0, texture.IndexOf('.'))}");
             }
         }
 
